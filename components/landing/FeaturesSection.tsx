@@ -1,62 +1,60 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { 
-  CameraAltIcon, 
-  DashboardIcon, 
-  CloudIcon, 
-  SecurityIcon,
-  NotificationsIcon,
-  AnalyticsIcon,
-  MapIcon,
-  BatteryChargingFullIcon
-} from '@mui/icons-material';
+import CameraAlt from '@mui/icons-material/CameraAlt';
+import Dashboard from '@mui/icons-material/Dashboard';
+import Cloud from '@mui/icons-material/Cloud';
+import Security from '@mui/icons-material/Security';
+import Notifications from '@mui/icons-material/Notifications';
+import Analytics from '@mui/icons-material/Analytics';
+import Map from '@mui/icons-material/Map';
+import BatteryChargingFull from '@mui/icons-material/BatteryChargingFull';
 
 const features = [
   {
-    icon: CameraAltIcon,
+    icon: CameraAlt,
     title: 'Real-Time Video Analysis',
     description: 'Advanced AI processes video frames in real-time to detect dangerous driving behaviors with high accuracy.',
     color: 'text-blue-500'
   },
   {
-    icon: DashboardIcon,
+    icon: Dashboard,
     title: 'Admin Dashboard',
     description: 'Comprehensive monitoring dashboard with live incident feeds, analytics, and detailed reporting capabilities.',
     color: 'text-green-500'
   },
   {
-    icon: CloudIcon,
+    icon: Cloud,
     title: 'Azure AI Integration',
     description: 'Powered by Microsoft Azure AI services for scalable, reliable, and accurate behavior detection.',
     color: 'text-purple-500'
   },
   {
-    icon: SecurityIcon,
+    icon: Security,
     title: 'Enterprise Security',
     description: 'Bank-level security with encrypted data transmission and Azure Active Directory integration.',
     color: 'text-red-500'
   },
   {
-    icon: NotificationsIcon,
+    icon: Notifications,
     title: 'Instant Alerts',
     description: 'Real-time notifications for drowsiness, phone usage, and overspeed incidents with customizable thresholds.',
     color: 'text-orange-500'
   },
   {
-    icon: AnalyticsIcon,
+    icon: Analytics,
     title: 'Advanced Analytics',
     description: 'Detailed behavior scoring, trend analysis, and exportable reports for fleet management insights.',
     color: 'text-indigo-500'
   },
   {
-    icon: MapIcon,
+    icon: Map,
     title: 'GPS Integration',
     description: 'Live location tracking with incident mapping and geofencing capabilities for complete fleet visibility.',
     color: 'text-teal-500'
   },
   {
-    icon: BatteryChargingFullIcon,
+    icon: BatteryChargingFull,
     title: 'Battery Optimized',
     description: 'Smart power management with offline recording and automatic sync when connectivity is restored.',
     color: 'text-yellow-500'

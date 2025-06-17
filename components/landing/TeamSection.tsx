@@ -1,7 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { LinkedInIcon, TwitterIcon, GitHubIcon } from '@mui/icons-material';
+import LinkedIn from '@mui/icons-material/LinkedIn';
+import Twitter from '@mui/icons-material/Twitter';
+import GitHub from '@mui/icons-material/GitHub';
 
 const team = [
   {
@@ -105,19 +107,19 @@ export default function TeamSection() {
                   href={member.social.linkedin}
                   className="text-gray-400 hover:text-blue-600 transition-colors"
                 >
-                  <LinkedInIcon />
+                  <LinkedIn />
                 </a>
                 <a
                   href={member.social.twitter}
                   className="text-gray-400 hover:text-blue-400 transition-colors"
                 >
-                  <TwitterIcon />
+                  <Twitter />
                 </a>
                 <a
                   href={member.social.github}
                   className="text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  <GitHubIcon />
+                  <GitHub />
                 </a>
               </div>
             </motion.div>

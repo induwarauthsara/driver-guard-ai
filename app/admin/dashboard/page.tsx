@@ -3,22 +3,20 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/components/providers/AuthProvider';
 import { useRouter } from 'next/navigation';
-import { 
-  DashboardIcon,
-  PeopleIcon,
-  WarningIcon,
-  TrendingUpIcon,
-  LocationOnIcon,
-  VisibilityIcon,
-  PhoneIcon,
-  SpeedIcon,
-  FilterListIcon,
-  GetAppIcon,
-  RefreshIcon,
-  LogoutIcon,
-  SettingsIcon,
-  NotificationsIcon
-} from '@mui/icons-material';
+import Dashboard from '@mui/icons-material/Dashboard';
+import People from '@mui/icons-material/People';
+import Warning from '@mui/icons-material/Warning';
+import TrendingUp from '@mui/icons-material/TrendingUp';
+import LocationOn from '@mui/icons-material/LocationOn';
+import Visibility from '@mui/icons-material/Visibility';
+import Phone from '@mui/icons-material/Phone';
+import Speed from '@mui/icons-material/Speed';
+import FilterList from '@mui/icons-material/FilterList';
+import GetApp from '@mui/icons-material/GetApp';
+import Refresh from '@mui/icons-material/Refresh';
+import Logout from '@mui/icons-material/Logout';
+import Settings from '@mui/icons-material/Settings';
+import Notifications from '@mui/icons-material/Notifications';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts';
 
 interface Driver {
@@ -156,10 +154,10 @@ export default function AdminDashboard() {
 
   const getIncidentIcon = (type: string) => {
     switch (type) {
-      case 'drowsiness': return <VisibilityIcon className="text-orange-500" />;
-      case 'phone': return <PhoneIcon className="text-red-500" />;
-      case 'overspeed': return <SpeedIcon className="text-purple-500" />;
-      default: return <WarningIcon className="text-gray-500" />;
+      case 'drowsiness': return <Visibility className="text-orange-500" />;
+      case 'phone': return <Phone className="text-red-500" />;
+      case 'overspeed': return <Speed className="text-purple-500" />;
+      default: return <Warning className="text-gray-500" />;
     }
   };
 
@@ -204,7 +202,7 @@ export default function AdminDashboard() {
       <div className="bg-white dark:bg-gray-800 shadow-sm px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <DashboardIcon className="text-blue-500 text-3xl" />
+            <Dashboard className="text-blue-500 text-3xl" />
             <div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                 DriveGuard AI Dashboard
@@ -217,10 +215,10 @@ export default function AdminDashboard() {
           
           <div className="flex items-center space-x-4">
             <button className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-              <NotificationsIcon />
+              <Notifications />
             </button>
             <button className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-              <SettingsIcon />
+              <Settings />
             </button>
             <div className="flex items-center space-x-3">
               <img
@@ -237,7 +235,7 @@ export default function AdminDashboard() {
               onClick={logout}
               className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             >
-              <LogoutIcon />
+              <Logout />
             </button>
           </div>
         </div>
@@ -248,10 +246,10 @@ export default function AdminDashboard() {
         <div className="px-6">
           <nav className="flex space-x-8">
             {[
-              { id: 'overview', label: 'Overview', icon: DashboardIcon },
-              { id: 'incidents', label: 'Incidents', icon: WarningIcon },
-              { id: 'drivers', label: 'Drivers', icon: PeopleIcon },
-              { id: 'analytics', label: 'Analytics', icon: TrendingUpIcon }
+              { id: 'overview', label: 'Overview', icon: Dashboard },
+              { id: 'incidents', label: 'Incidents', icon: Warning },
+              { id: 'drivers', label: 'Drivers', icon: People },
+              { id: 'analytics', label: 'Analytics', icon: TrendingUp }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -278,7 +276,7 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <div className="flex items-center">
-                  <PeopleIcon className="text-blue-500 text-3xl mr-4" />
+                  <People className="text-blue-500 text-3xl mr-4" />
                   <div>
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Drivers</p>
                     <p className="text-2xl font-semibold text-gray-900 dark:text-white">{analytics.totalDrivers}</p>
@@ -288,7 +286,7 @@ export default function AdminDashboard() {
               
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <div className="flex items-center">
-                  <LocationOnIcon className="text-green-500 text-3xl mr-4" />
+                  <LocationOn className="text-green-500 text-3xl mr-4" />
                   <div>
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Active Now</p>
                     <p className="text-2xl font-semibold text-gray-900 dark:text-white">{analytics.activeDrivers}</p>
@@ -298,7 +296,7 @@ export default function AdminDashboard() {
               
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <div className="flex items-center">
-                  <WarningIcon className="text-orange-500 text-3xl mr-4" />
+                  <Warning className="text-orange-500 text-3xl mr-4" />
                   <div>
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Incidents</p>
                     <p className="text-2xl font-semibold text-gray-900 dark:text-white">{analytics.totalIncidents}</p>
@@ -308,7 +306,7 @@ export default function AdminDashboard() {
               
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <div className="flex items-center">
-                  <TrendingUpIcon className="text-purple-500 text-3xl mr-4" />
+                  <TrendingUp className="text-purple-500 text-3xl mr-4" />
                   <div>
                     <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Detection Rate</p>
                     <p className="text-2xl font-semibold text-gray-900 dark:text-white">98.5%</p>
@@ -406,7 +404,7 @@ export default function AdminDashboard() {
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
                 <div className="flex items-center space-x-4">
-                  <FilterListIcon className="text-gray-500" />
+                  <FilterList className="text-gray-500" />
                   <select
                     value={filterType}
                     onChange={(e) => setFilterType(e.target.value as any)}
@@ -424,11 +422,11 @@ export default function AdminDashboard() {
                     onClick={exportData}
                     className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2"
                   >
-                    <GetAppIcon />
+                    <GetApp />
                     <span>Export</span>
                   </button>
                   <button className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2">
-                    <RefreshIcon />
+                    <Refresh />
                     <span>Refresh</span>
                   </button>
                 </div>

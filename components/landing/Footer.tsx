@@ -1,7 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { SecurityIcon, FacebookIcon, TwitterIcon, LinkedInIcon, InstagramIcon } from '@mui/icons-material';
+import Security from '@mui/icons-material/Security';
+import Facebook from '@mui/icons-material/Facebook';
+import Twitter from '@mui/icons-material/Twitter';
+import LinkedIn from '@mui/icons-material/LinkedIn';
+import Instagram from '@mui/icons-material/Instagram';
 
 export default function Footer() {
   return (
@@ -11,7 +15,7 @@ export default function Footer() {
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <SecurityIcon className="text-blue-500 text-3xl" />
+              <Security className="text-blue-500 text-3xl" />
               <span className="text-2xl font-bold">DriveGuard AI</span>
             </div>
             <p className="text-gray-300 mb-6 max-w-md">
@@ -20,16 +24,16 @@ export default function Footer() {
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <FacebookIcon />
+                <Facebook />
               </a>
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <TwitterIcon />
+                <Twitter />
               </a>
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <LinkedInIcon />
+                <LinkedIn />
               </a>
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <InstagramIcon />
+                <Instagram />
               </a>
             </div>
           </div>

@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { CheckIcon } from '@mui/icons-material';
+import Check from '@mui/icons-material/Check';
 
 const plans = [
   {
@@ -114,7 +114,7 @@ export default function PricingSection() {
               <ul className="space-y-3 mb-8">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-center">
-                    <CheckIcon className="text-green-500 mr-3 flex-shrink-0" />
+                    <Check className="text-green-500 mr-3 flex-shrink-0" />
                     <span className="text-gray-700 dark:text-gray-300">{feature}</span>
                   </li>
                 ))}

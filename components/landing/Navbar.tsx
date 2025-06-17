@@ -3,13 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useTheme } from '@/components/providers/ThemeProvider';
-import { 
-  LightModeIcon, 
-  DarkModeIcon, 
-  MenuIcon, 
-  CloseIcon,
-  SecurityIcon 
-} from '@mui/icons-material';
+import LightMode from '@mui/icons-material/LightMode';
+import DarkMode from '@mui/icons-material/DarkMode';
+import Menu from '@mui/icons-material/Menu';
+import Close from '@mui/icons-material/Close';
+import Security from '@mui/icons-material/Security';
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
@@ -29,7 +27,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <SecurityIcon className="text-blue-500 text-3xl" />
+            <Security className="text-blue-500 text-3xl" />
             <span className="text-xl font-bold text-white">DriveGuard AI</span>
           </div>
 
@@ -54,7 +52,7 @@ export default function Navbar() {
               onClick={toggleTheme}
               className="p-2 rounded-full text-white hover:bg-white/10 transition-colors"
             >
-              {theme === 'light' ? <DarkModeIcon /> : <LightModeIcon />}
+              {theme === 'light' ? <DarkMode /> : <LightMode />}
             </button>
             
             <Link
@@ -69,7 +67,7 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="md:hidden p-2 rounded-full text-white hover:bg-white/10 transition-colors"
             >
-              {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
+              {isMenuOpen ? <Close /> : <Menu />}
             </button>
           </div>
         </div>

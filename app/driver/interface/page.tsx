@@ -4,22 +4,20 @@ import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/components/providers/AuthProvider';
 import { useRouter } from 'next/navigation';
 import Webcam from 'react-webcam';
-import { 
-  PlayArrowIcon, 
-  StopIcon, 
-  CameraAltIcon,
-  LocationOnIcon,
-  BatteryFullIcon,
-  SignalWifiIcon,
-  VolumeUpIcon,
-  WarningIcon,
-  CheckCircleIcon,
-  PhoneIcon,
-  VisibilityOffIcon,
-  SpeedIcon,
-  LogoutIcon,
-  SettingsIcon
-} from '@mui/icons-material';
+import PlayArrow from '@mui/icons-material/PlayArrow';
+import Stop from '@mui/icons-material/Stop';
+import CameraAlt from '@mui/icons-material/CameraAlt';
+import LocationOn from '@mui/icons-material/LocationOn';
+import BatteryFull from '@mui/icons-material/BatteryFull';
+import SignalWifi4Bar from '@mui/icons-material/SignalWifi4Bar';
+import VolumeUp from '@mui/icons-material/VolumeUp';
+import Warning from '@mui/icons-material/Warning';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import Phone from '@mui/icons-material/Phone';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Speed from '@mui/icons-material/Speed';
+import Logout from '@mui/icons-material/Logout';
+import Settings from '@mui/icons-material/Settings';
 
 interface Incident {
   id: string;
@@ -240,10 +238,10 @@ export default function DriverInterface() {
 
   const getIncidentIcon = (type: string) => {
     switch (type) {
-      case 'drowsiness': return <VisibilityOffIcon className="text-2xl" />;
-      case 'phone': return <PhoneIcon className="text-2xl" />;
-      case 'overspeed': return <SpeedIcon className="text-2xl" />;
-      default: return <WarningIcon className="text-2xl" />;
+      case 'drowsiness': return <VisibilityOff className="text-2xl" />;
+      case 'phone': return <Phone className="text-2xl" />;
+      case 'overspeed': return <Speed className="text-2xl" />;
+      default: return <Warning className="text-2xl" />;
     }
   };
 
@@ -272,13 +270,13 @@ export default function DriverInterface() {
           
           <div className="flex items-center space-x-2">
             <button className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-              <SettingsIcon />
+              <Settings />
             </button>
             <button
               onClick={logout}
               className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             >
-              <LogoutIcon />
+              <Logout />
             </button>
           </div>
         </div>
@@ -321,7 +319,7 @@ export default function DriverInterface() {
                   onClick={startTrip}
                   className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold flex items-center space-x-2 transition-colors"
                 >
-                  <PlayArrowIcon />
+                  <PlayArrow />
                   <span>Start Trip</span>
                 </button>
               ) : (
@@ -329,7 +327,7 @@ export default function DriverInterface() {
                   onClick={stopTrip}
                   className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold flex items-center space-x-2 transition-colors"
                 >
-                  <StopIcon />
+                  <Stop />
                   <span>Stop Trip</span>
                 </button>
               )}
@@ -368,7 +366,7 @@ export default function DriverInterface() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <BatteryFullIcon className="text-green-500" />
+                    <BatteryFull className="text-green-500" />
                     <span className="text-gray-700 dark:text-gray-300">Battery</span>
                   </div>
                   <span className="font-medium text-gray-900 dark:text-white">
@@ -378,7 +376,7 @@ export default function DriverInterface() {
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <SignalWifiIcon className={connectionStatus === 'online' ? 'text-green-500' : 'text-red-500'} />
+                    <SignalWifi4Bar className={connectionStatus === 'online' ? 'text-green-500' : 'text-red-500'} />
                     <span className="text-gray-700 dark:text-gray-300">Connection</span>
                   </div>
                   <span className={`font-medium ${connectionStatus === 'online' ? 'text-green-600' : 'text-red-600'}`}>
@@ -388,7 +386,7 @@ export default function DriverInterface() {
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <LocationOnIcon className="text-blue-500" />
+                    <LocationOn className="text-blue-500" />
                     <span className="text-gray-700 dark:text-gray-300">GPS</span>
                   </div>
                   <span className="font-medium text-green-600">

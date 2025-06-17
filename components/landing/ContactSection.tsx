@@ -2,12 +2,10 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { 
-  EmailIcon, 
-  PhoneIcon, 
-  LocationOnIcon, 
-  SendIcon 
-} from '@mui/icons-material';
+import Email from '@mui/icons-material/Email';
+import Phone from '@mui/icons-material/Phone';
+import LocationOn from '@mui/icons-material/LocationOn';
+import Send from '@mui/icons-material/Send';
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -70,7 +68,7 @@ export default function ContactSection() {
             
             <div className="space-y-6">
               <div className="flex items-center">
-                <EmailIcon className="text-blue-500 mr-4 text-2xl" />
+                <Email className="text-blue-500 mr-4 text-2xl" />
                 <div>
                   <p className="font-medium text-gray-900 dark:text-white">Email</p>
                   <p className="text-gray-600 dark:text-gray-300">contact@driveguard.ai</p>
@@ -78,7 +76,7 @@ export default function ContactSection() {
               </div>
               
               <div className="flex items-center">
-                <PhoneIcon className="text-blue-500 mr-4 text-2xl" />
+                <Phone className="text-blue-500 mr-4 text-2xl" />
                 <div>
                   <p className="font-medium text-gray-900 dark:text-white">Phone</p>
                   <p className="text-gray-600 dark:text-gray-300">+1 (555) 123-4567</p>
@@ -86,7 +84,7 @@ export default function ContactSection() {
               </div>
               
               <div className="flex items-center">
-                <LocationOnIcon className="text-blue-500 mr-4 text-2xl" />
+                <LocationOn className="text-blue-500 mr-4 text-2xl" />
                 <div>
                   <p className="font-medium text-gray-900 dark:text-white">Address</p>
                   <p className="text-gray-600 dark:text-gray-300">
@@ -188,7 +186,7 @@ export default function ContactSection() {
                   <div className="loading-spinner w-5 h-5"></div>
                 ) : (
                   <>
-                    <SendIcon />
+                    <Send />
                     Send Message
                   </>
                 )}

@@ -16,17 +16,20 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme) {
-      setTheme(savedTheme);
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark');
+    // Only run this on the client side
+    if (typeof window !== 'undefined') {
+      setMounted(true);
+      const savedTheme = localStorage.getItem('theme') as Theme;
+      if (savedTheme) {
+        setTheme(savedTheme);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setTheme('dark');
+      }
     }
   }, []);
 
   useEffect(() => {
-    if (mounted) {
+    if (mounted && typeof window !== 'undefined') {
       document.documentElement.setAttribute('data-theme', theme);
       localStorage.setItem('theme', theme);
     }
@@ -37,7 +40,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   if (!mounted) {
-    return <>{children}</>;
+    return (
+      <ThemeContext.Provider value={{ theme: 'light', toggleTheme: () => {} }}>
+        {children}
+      </ThemeContext.Provider>
+    );
   }
 
   return (

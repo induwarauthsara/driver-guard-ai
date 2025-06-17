@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/components/providers/AuthProvider';
-import { SecurityIcon, VisibilityIcon, VisibilityOffIcon } from '@mui/icons-material';
+import Security from '@mui/icons-material/Security';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -41,7 +43,7 @@ export default function LoginPage() {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="flex justify-center">
-            <SecurityIcon className="text-blue-500 text-6xl" />
+            <Security className="text-blue-500 text-6xl" />
           </div>
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">
             Sign in to DriveGuard AI
@@ -128,7 +130,7 @@ export default function LoginPage() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
                 >
-                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
                 </button>
               </div>
             </div>
