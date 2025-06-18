@@ -16,7 +16,7 @@ export default function ContactSection() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
@@ -28,7 +28,7 @@ export default function ContactSection() {
     setIsSubmitting(false);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e) => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
@@ -57,34 +57,93 @@ export default function ContactSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Information */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ 
+              opacity: 1, 
+              x: 0,
+              transition: {
+                type: "spring",
+                stiffness: 100,
+                damping: 15
+              }
+            }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700"
           >
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            <motion.h3 
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              viewport={{ once: true }}
+              className="text-2xl font-bold text-gray-900 dark:text-white mb-6"
+            >
               Contact Information
-            </h3>
+            </motion.h3>
             
             <div className="space-y-6">
-              <div className="flex items-center">
-                <Email className="text-blue-500 mr-4 text-2xl" />
+              <motion.div 
+                className="flex items-center"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                viewport={{ once: true }}
+                whileHover={{ x: 5, transition: { duration: 0.2 } }}
+              >
+                <motion.div 
+                  whileHover={{ 
+                    scale: 1.2, 
+                    rotate: [0, 10, -10, 0]
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Email className="text-cyan-600 mr-4 text-2xl" />
+                </motion.div>
                 <div>
                   <p className="font-medium text-gray-900 dark:text-white">Email</p>
                   <p className="text-gray-600 dark:text-gray-300">contact@driveguard.ai</p>
                 </div>
-              </div>
+              </motion.div>
               
-              <div className="flex items-center">
-                <Phone className="text-blue-500 mr-4 text-2xl" />
+              <motion.div 
+                className="flex items-center"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+                viewport={{ once: true }}
+                whileHover={{ x: 5, transition: { duration: 0.2 } }}
+              >
+                <motion.div 
+                  whileHover={{ 
+                    scale: 1.2, 
+                    rotate: [0, 10, -10, 0]
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Phone className="text-cyan-600 mr-4 text-2xl" />
+                </motion.div>
                 <div>
                   <p className="font-medium text-gray-900 dark:text-white">Phone</p>
                   <p className="text-gray-600 dark:text-gray-300">+1 (555) 123-4567</p>
                 </div>
-              </div>
+              </motion.div>
               
-              <div className="flex items-center">
-                <LocationOn className="text-blue-500 mr-4 text-2xl" />
+              <motion.div 
+                className="flex items-center"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5, duration: 0.5 }}
+                viewport={{ once: true }}
+                whileHover={{ x: 5, transition: { duration: 0.2 } }}
+              >
+                <motion.div 
+                  whileHover={{ 
+                    scale: 1.2, 
+                    rotate: [0, 10, -10, 0]
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <LocationOn className="text-cyan-600 mr-4 text-2xl" />
+                </motion.div>
                 <div>
                   <p className="font-medium text-gray-900 dark:text-white">Address</p>
                   <p className="text-gray-600 dark:text-gray-300">

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import Security from '@mui/icons-material/Security';
 import Facebook from '@mui/icons-material/Facebook';
 import Twitter from '@mui/icons-material/Twitter';
@@ -13,30 +14,81 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
-          <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
-              <Security className="text-blue-500 text-3xl" />
+          <motion.div 
+            className="col-span-1 md:col-span-2"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <motion.div 
+              className="flex items-center space-x-2 mb-4"
+              whileHover={{ x: 4, transition: { duration: 0.2 } }}
+            >
+              <motion.div
+                whileHover={{ 
+                  rotate: [0, 10, -10, 0],
+                  scale: 1.1
+                }}
+                transition={{ duration: 0.5 }}
+              >
+                <Security className="text-cyan-500 text-3xl" />
+              </motion.div>
               <span className="text-2xl font-bold">DriveGuard AI</span>
-            </div>
-            <p className="text-gray-300 mb-6 max-w-md">
+            </motion.div>
+            
+            <motion.p 
+              className="text-gray-300 mb-6 max-w-md"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
               Leading the future of road safety with AI-powered driver monitoring 
               technology. Protecting lives through intelligent vehicle safety systems.
-            </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+            </motion.p>
+            
+            <motion.div 
+              className="flex space-x-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              <motion.a 
+                href="#" 
+                className="text-gray-400 hover:text-white transition-colors"
+                whileHover={{ scale: 1.2, color: "#4267B2" }}
+                transition={{ duration: 0.2 }}
+              >
                 <Facebook />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              </motion.a>
+              <motion.a 
+                href="#" 
+                className="text-gray-400 hover:text-white transition-colors"
+                whileHover={{ scale: 1.2, color: "#1DA1F2" }}
+                transition={{ duration: 0.2 }}
+              >
                 <Twitter />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              </motion.a>
+              <motion.a 
+                href="#" 
+                className="text-gray-400 hover:text-white transition-colors"
+                whileHover={{ scale: 1.2, color: "#0077B5" }}
+                transition={{ duration: 0.2 }}
+              >
                 <LinkedIn />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              </motion.a>
+              <motion.a 
+                href="#" 
+                className="text-gray-400 hover:text-white transition-colors"
+                whileHover={{ scale: 1.2, color: "#E1306C" }}
+                transition={{ duration: 0.2 }}
+              >
                 <Instagram />
-              </a>
-            </div>
-          </div>
+              </motion.a>
+            </motion.div>
+          </motion.div>
 
           {/* Quick Links */}
           <div>

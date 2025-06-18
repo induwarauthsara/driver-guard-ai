@@ -60,18 +60,51 @@ export default function StatsSection() {
           {stats.map((stat, index) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="text-center"
+              initial={{ opacity: 0, y: 50, scale: 0.8 }}
+              whileInView={{ 
+                opacity: 1, 
+                y: 0, 
+                scale: 1,
+                transition: {
+                  type: "spring",
+                  stiffness: 80,
+                  damping: 15,
+                  delay: index * 0.15
+                }
+              }}
+              viewport={{ once: true, margin: "-100px" }}
+              whileHover={{
+                scale: 1.05,
+                transition: { duration: 0.3 }
+              }}
+              className="text-center bg-white/10 backdrop-blur-sm p-6 rounded-lg shadow-xl border border-white/20"
             >
-              <div className="text-4xl md:text-5xl font-bold text-yellow-300 mb-2">
-                <AnimatedCounter end={stat.value} suffix={stat.suffix} />
-              </div>
-              <div className="text-white/90 font-medium">
+              <motion.div
+                initial={{ scale: 0.5, opacity: 0 }}
+                whileInView={{ 
+                  scale: [0.5, 1.2, 1],
+                  opacity: [0, 1, 1]
+                }}
+                transition={{ 
+                  duration: 0.8, 
+                  delay: index * 0.15 + 0.2,
+                  ease: "easeOut"
+                }}
+                viewport={{ once: true }}
+                className="text-4xl md:text-5xl font-bold text-yellow-300 mb-2"
+              >
+                <AnimatedCounter end={stat.value} suffix={stat.suffix} duration={3000} />
+              </motion.div>
+              
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ delay: index * 0.15 + 0.5, duration: 0.5 }}
+                viewport={{ once: true }}
+                className="text-white/90 font-medium"
+              >
                 {stat.label}
-              </div>
+              </motion.div>
             </motion.div>
           ))}
         </div>

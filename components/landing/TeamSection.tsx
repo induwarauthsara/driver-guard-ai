@@ -76,33 +76,94 @@ export default function TeamSection() {
           {team.map((member, index) => (
             <motion.div
               key={member.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="feature-card text-center"
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              whileInView={{ 
+                opacity: 1, 
+                y: 0, 
+                scale: 1,
+                transition: {
+                  type: "spring",
+                  stiffness: 70,
+                  damping: 14,
+                  delay: index * 0.2
+                }
+              }}
+              viewport={{ once: true, margin: "-100px" }}
+              whileHover={{ 
+                y: -8,
+                boxShadow: "0 15px 30px rgba(0, 0, 0, 0.15)",
+                transition: { duration: 0.3 }
+              }}
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-gray-700"
             >
-              <div className="relative mb-6">
+              <motion.div 
+                className="relative mb-6"
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.2 + 0.3, duration: 0.5 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.05 }}
+              >
                 <img
                   src={member.image}
                   alt={member.name}
-                  className="w-32 h-32 rounded-full mx-auto object-cover"
+                  className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-cyan-100 dark:border-cyan-900"
                 />
-              </div>
+                <motion.div 
+                  className="absolute inset-0 rounded-full"
+                  animate={{
+                    boxShadow: [
+                      "0 0 0 0 rgba(6, 182, 212, 0)",
+                      "0 0 0 4px rgba(6, 182, 212, 0.3)",
+                      "0 0 0 0 rgba(6, 182, 212, 0)"
+                    ]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    delay: index * 0.7
+                  }}
+                />
+              </motion.div>
               
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">
+              <motion.h3 
+                className="text-xl font-semibold text-gray-900 dark:text-white mb-1"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 + 0.4, duration: 0.5 }}
+                viewport={{ once: true }}
+              >
                 {member.name}
-              </h3>
+              </motion.h3>
               
-              <p className="text-blue-600 dark:text-blue-400 font-medium mb-3">
+              <motion.p 
+                className="text-cyan-600 dark:text-cyan-400 font-medium mb-3"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 + 0.5, duration: 0.5 }}
+                viewport={{ once: true }}
+              >
                 {member.role}
-              </p>
+              </motion.p>
               
-              <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 leading-relaxed">
+              <motion.p 
+                className="text-gray-600 dark:text-gray-300 text-sm mb-4 leading-relaxed"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 + 0.6, duration: 0.5 }}
+                viewport={{ once: true }}
+              >
                 {member.bio}
-              </p>
+              </motion.p>
               
-              <div className="flex justify-center space-x-3">
+              <motion.div 
+                className="flex justify-center space-x-3"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 + 0.7, duration: 0.5 }}
+                viewport={{ once: true }}
+              >
                 <a
                   href={member.social.linkedin}
                   className="text-gray-400 hover:text-blue-600 transition-colors"
@@ -121,7 +182,7 @@ export default function TeamSection() {
                 >
                   <GitHub />
                 </a>
-              </div>
+              </motion.div>
             </motion.div>
           ))}
         </div>
