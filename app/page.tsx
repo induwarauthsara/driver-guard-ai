@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import HeroSection from '@/components/landing/HeroSection';
+import HeroSection from '@/components/landing/HeroSectionNew';
 import FeaturesSection from '@/components/landing/FeaturesSection';
 import StatsSection from '@/components/landing/StatsSection';
 import PricingSection from '@/components/landing/PricingSectionNew';

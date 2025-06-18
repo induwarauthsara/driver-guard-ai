@@ -215,19 +215,19 @@ export default function HeroSection() {
             }}
           />
         ))}
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <motion.div
-          style={{
-            rotateX: rotateX,
-            rotateY: rotateY,
-            transformStyle: "preserve-3d",
-          }}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
+      </div>      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <motion.div
+            style={{
+              rotateX: rotateX,
+              rotateY: rotateY,
+              transformStyle: "preserve-3d",
+            }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center lg:text-left"
+          >
           {/* 3D Title with Depth */}          <div className="mb-10 relative z-10">
             {/* Main Title with 3D effect and highlight */}
             <motion.h1 
@@ -432,10 +432,8 @@ export default function HeroSection() {
                 Admin Dashboard
               </Link>
             </motion.div>
-          </motion.div>
-
-          {/* 3D Interactive Feature Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          </motion.div>          {/* 3D Interactive Feature Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto lg:max-w-none">
             {[
               {
                 icon: Visibility,

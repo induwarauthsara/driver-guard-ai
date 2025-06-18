@@ -107,9 +107,8 @@ export default function PricingSection() {
                   : 'pricing-card'
               }`}
             >
-              {plan.popular && (
-                <motion.div 
-                  className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20"
+              {plan.popular && (                <motion.div 
+                  className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20 w-32"
                   initial={{ y: -10, opacity: 0 }}
                   whileInView={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.5, duration: 0.5 }}
@@ -129,7 +128,7 @@ export default function PricingSection() {
                       }}
                     />
                     <motion.span 
-                      className="relative block bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium"
+                      className="relative block bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium text-center"
                       animate={{ 
                         boxShadow: [
                           "0 0 0 rgba(6, 182, 212, 0.3)",
