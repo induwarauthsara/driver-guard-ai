@@ -11,8 +11,8 @@ const team = [
     name: 'Induwara Uthsara',
     role: 'System Architect & Code Wizard',
     image: '/induwara.png',
-    bio: 'The entire web platform — from interface to backend — crafted into a fully working system.',
-    expertise: ['Frontend Sorcery', 'Backend Wizardry', 'Tech Problem Solver'],
+    bio: 'The entire web platform, from interface to backend — crafted into a fully working system.',
+    expertise: ['Frontend Sorcery', 'Backend Wizardry', 'Web Application Architect'],
         funFact: 'First-year tech enthusiast at UCSC who builds full systems while others draft ideas.',
     social: {
       linkedin: 'https://www.linkedin.com/in/induwarauthsara/',
@@ -29,7 +29,7 @@ const team = [
     funFact: 'First-year UCSC student who sketches algorithms while others sketch doodles',
     social: {
       linkedin: 'https://www.linkedin.com/in/sashikdevx/',
-      web: 'https://www.credly.com/users/sashik-thivanka'
+      web: 'https://www.credly.com/users/sashik-thivanka',
       github: '#'
     }
   },
@@ -43,7 +43,7 @@ const team = [
     social: {
       linkedin: '#',
       twitter: '#',
-        github: 'nahlaishfaq2005'
+      github: 'nahlaishfaq2005'
     }
   }
 ];
@@ -67,7 +67,7 @@ export default function TeamSection() {
             viewport={{ once: true }}
             className="px-3 py-1 rounded-full text-sm font-medium bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-300 inline-block mb-4"
           >
-            Genius Squad
+            The Innovation Team
           </motion.span>
           
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
@@ -78,7 +78,7 @@ export default function TeamSection() {
             Rising talents from the University of Colombo School of Computing, 
             turning their fresh perspectives into groundbreaking innovation.
           </p>
-        </motion.div>        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-4xl mx-auto">
+        </motion.div>        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto">
           {team.map((member, index) => (
             <motion.div
               key={member.name}

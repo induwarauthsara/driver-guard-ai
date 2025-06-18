@@ -215,7 +215,7 @@ export default function HeroSection() {
             }}
           />
         ))}
-      </div>      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      </div>      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <motion.div
             style={{
@@ -227,22 +227,22 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center lg:text-left"
-          >
-          {/* 3D Title with Depth */}          <div className="mb-10 relative z-10">
+          >{/* 3D Title with Depth */}          <div className="mb-10 relative z-10">
             {/* Main Title with 3D effect and highlight */}
             <motion.h1 
-              className="text-4xl md:text-6xl font-bold text-white relative hero-title"
+              className="text-4xl md:text-6xl font-bold text-white relative hero-title z-20"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
+              style={{ position: "relative", zIndex: 30 }}
             >
-              {/* Logo/Branding Element */}
-              <div className="flex items-center justify-center mb-2">
+              {/* Logo/Branding Element */}                <div className="flex items-center justify-center mb-2 relative z-30">
                 <motion.div                  className="w-14 h-14 mr-4 bg-cyan-600/80 rounded-xl flex items-center justify-center relative overflow-hidden"
                   whileHover={{ 
                     scale: 1.05,
                     rotate: 5
                   }}
+                  style={{ position: "relative", zIndex: 30 }}
                 >
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-tr from-cyan-600 to-blue-700"
@@ -252,36 +252,42 @@ export default function HeroSection() {
                     transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
                   />
                   <Security className="text-white w-8 h-8 relative z-10" />
-                </motion.div>
-                
-                <div className="text-left">
+                </motion.div>                <div className="text-left relative z-30">
                   <motion.div
                     className="relative inline-block"
                     whileHover={{ scale: 1.03 }}
+                    style={{ position: "relative", zIndex: 30 }}
                   >
-                    <motion.span
-                      className="text-white text-5xl md:text-6xl font-extrabold"
-                      animate={{ 
-                        textShadow: [
-                          "0 0 10px rgba(6, 182, 212, 0.5)",
-                          "0 0 20px rgba(6, 182, 212, 0.7)",
-                          "0 0 10px rgba(6, 182, 212, 0.5)"
-                        ]
-                      }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      DriverGuard
-                    </motion.span>
-                    <motion.span 
-                      className="ml-3 text-amber-400 font-black relative"
-                      animate={{
-                        scale: [1, 1.1, 1],
-                      }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                      style={{ display: "inline-block" }}
-                    >
-                      AI
-                    </motion.span>
+                    <div className="relative flex items-center">
+                      <motion.div
+                        className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 text-5xl md:text-6xl font-extrabold"
+                        animate={{
+                          textShadow: [
+                            "0 0 10px rgba(6, 182, 212, 0.5)",
+                            "0 0 20px rgba(6, 182, 212, 0.7)",
+                            "0 0 10px rgba(6, 182, 212, 0.5)"
+                          ]
+                        }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        style={{ 
+                          position: "relative", 
+                          zIndex: 30,
+                          WebkitBackgroundClip: "text"
+                        }}
+                      >
+                        DriverGuard
+                      </motion.div>
+                      <motion.span 
+                        className="ml-3 text-amber-400 font-black relative"
+                        animate={{
+                          scale: [1, 1.1, 1],
+                        }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                        style={{ display: "inline-block" }}
+                      >
+                        AI
+                      </motion.span>
+                    </div>
                   </motion.div>
                 </div>
               </div>

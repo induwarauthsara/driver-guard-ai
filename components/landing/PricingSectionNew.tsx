@@ -3,11 +3,13 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Check from '@mui/icons-material/Check';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import VolumeUp from '@mui/icons-material/VolumeUp';
 
 const plans = [
   {
     name: 'Starter',
-    price: 29,
+    price: 15,
     period: 'per vehicle/month',
     description: 'Perfect for small fleets and individual drivers',
     features: [
@@ -22,7 +24,7 @@ const plans = [
   },
   {
     name: 'Professional',
-    price: 59,
+    price: 40,
     period: 'per vehicle/month',
     description: 'Advanced features for growing fleets',
     features: [
@@ -39,7 +41,7 @@ const plans = [
   },
   {
     name: 'Enterprise',
-    price: 99,
+    price: 60,
     period: 'per vehicle/month',
     description: 'Complete solution for large fleets',
     features: [
@@ -106,9 +108,10 @@ export default function PricingSection() {
                   ? 'ring-2 ring-cyan-500 shadow-cyan-500/20 z-10 scale-105 md:scale-110 pricing-card-popular' 
                   : 'pricing-card'
               }`}
-            >
-              {plan.popular && (                <motion.div 
-                  className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20 w-32"
+            >              {plan.popular && (
+                <motion.div 
+                  className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-30"
+                  style={{ width: "150px", pointerEvents: "none" }}
                   initial={{ y: -10, opacity: 0 }}
                   whileInView={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.5, duration: 0.5 }}
@@ -128,7 +131,7 @@ export default function PricingSection() {
                       }}
                     />
                     <motion.span 
-                      className="relative block bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium text-center"
+                      className="relative block bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-1 rounded-full text-sm font-bold text-center shadow-lg"
                       animate={{ 
                         boxShadow: [
                           "0 0 0 rgba(6, 182, 212, 0.3)",

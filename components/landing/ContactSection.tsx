@@ -151,7 +151,7 @@ export default function ContactSection() {
                     San Francisco, CA 94105
                   </p>
                 </div>
-              </div>
+              </motion.div>
             </div>
 
             <div className="mt-8">

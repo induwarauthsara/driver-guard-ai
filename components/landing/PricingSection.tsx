@@ -7,7 +7,7 @@ import Check from '@mui/icons-material/Check';
 const plans = [
   {
     name: 'Starter',
-    price: 29,
+    price: 15,
     period:                <motion.div 
                   className="relative group"
                   whileHover={{ scale: 1.03 }}
@@ -50,7 +50,7 @@ const plans = [
   },
   {
     name: 'Professional',
-    price: 59,
+    price: 25,
     period: 'per vehicle/month',
     description: 'Advanced features for growing fleets',
     features: [
@@ -67,7 +67,7 @@ const plans = [
   },
   {
     name: 'Enterprise',
-    price: 99,
+    price: 40,
     period: 'per vehicle/month',
     description: 'Complete solution for large organizations',
     features: [
