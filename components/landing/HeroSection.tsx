@@ -227,7 +227,9 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center lg:text-left"
-          >{/* 3D Title with Depth */}          <div className="mb-10 relative z-10">
+          >
+            {/* 3D Title with Depth */}
+            <div className="mb-10 relative z-10">
             {/* Main Title with 3D effect and highlight */}
             <motion.h1 
               className="text-4xl md:text-6xl font-bold text-white relative hero-title z-20"
@@ -235,9 +237,9 @@ export default function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               style={{ position: "relative", zIndex: 30 }}
-            >
-              {/* Logo/Branding Element */}                <div className="flex items-center justify-center mb-2 relative z-30">
-                <motion.div                  className="w-14 h-14 mr-4 bg-cyan-600/80 rounded-xl flex items-center justify-center relative overflow-hidden"
+            >              {/* Logo/Branding Element */}
+              <div className="flex items-center justify-center mb-2 relative z-30">
+                <motion.div className="w-14 h-14 mr-4 bg-cyan-600/80 rounded-xl flex items-center justify-center relative overflow-hidden"
                   whileHover={{ 
                     scale: 1.05,
                     rotate: 5

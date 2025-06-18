@@ -22,7 +22,7 @@ export default function ContactSection() {
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Get in Touch
           </h2>          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Interested in our driver monitoring technology? We're just a message away!
+            Interested in our driver monitoring technology? We&apos;re just a message away!
           </p>
         </motion.div>
 

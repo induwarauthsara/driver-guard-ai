@@ -49,7 +49,7 @@ export default function ContactSection() {
             Get in Touch
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Ready to enhance your fleet's safety? Contact us to learn more about 
+            Ready to enhance your fleet&apos;s safety? Contact us to learn more about 
             DriveGuard AI and schedule a personalized demo.
           </p>
         </motion.div>

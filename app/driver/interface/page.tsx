@@ -342,7 +342,7 @@ export default function DriverInterface() {
                 {currentIncident ? (
                   getIncidentIcon(currentIncident)
                 ) : (
-                  <CheckCircleIcon className="text-3xl" />
+                  <CheckCircle className="text-3xl" />
                 )}
               </div>
               <h3 className="text-xl font-bold mb-2">
