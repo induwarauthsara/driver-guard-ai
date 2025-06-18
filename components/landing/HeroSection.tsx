@@ -34,9 +34,8 @@ export default function HeroSection() {
 
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], [10, -10]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], [-10, 10]);
-
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (sectionRef.current) {
         const rect = sectionRef.current.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width - 0.5;
@@ -50,6 +49,7 @@ export default function HeroSection() {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [mouseX, mouseY]);
+  
   const floatingElements = [
     { id: 1, size: 60, delay: 0, duration: 6, startX: 100, startY: 200 },
     { id: 2, size: 80, delay: 1, duration: 8, startX: 250, startY: 150 },
@@ -59,6 +59,7 @@ export default function HeroSection() {
     { id: 6, size: 35, delay: 2.5, duration: 6.5, startX: 300, startY: 350 },
     { id: 7, size: 55, delay: 1.5, duration: 7.5, startX: 800, startY: 180 },
   ];
+  
   return (
     <section 
       ref={sectionRef}
@@ -78,63 +79,61 @@ export default function HeroSection() {
             background: element.id % 3 === 0 
               ? 'linear-gradient(135deg, rgba(6, 182, 212, 0.4) 0%, rgba(8, 145, 178, 0.4) 100%)' 
               : element.id % 2 === 0
-              ? 'linear-gradient(135deg, rgba(251, 146, 60, 0.3) 0%, rgba(249, 115, 22, 0.3) 100%)'
-              : 'linear-gradient(135deg, rgba(34, 197, 94, 0.3) 0%, rgba(22, 163, 74, 0.3) 100%)',
+                ? 'linear-gradient(135deg, rgba(251, 146, 60, 0.3) 0%, rgba(234, 88, 12, 0.3) 100%)'
+                : 'linear-gradient(135deg, rgba(5, 150, 105, 0.3) 0%, rgba(4, 120, 87, 0.3) 100%)',
             borderRadius: '50%',
-            filter: 'blur(0.5px)',
-            border: '1px solid rgba(6, 182, 212, 0.2)',
-            boxShadow: element.id % 2 === 0 
-              ? '0 0 20px rgba(251, 146, 60, 0.3)' 
-              : '0 0 20px rgba(6, 182, 212, 0.3)',
+            top: element.startY,
+            left: element.startX,
+            boxShadow: element.id % 3 === 0 
+              ? '0 0 20px rgba(6, 182, 212, 0.4)' 
+              : element.id % 2 === 0
+                ? '0 0 20px rgba(251, 146, 60, 0.3)'
+                : '0 0 20px rgba(5, 150, 105, 0.3)',
           }}
           animate={{
-            x: [0, 120, -60, 180, 0],
-            y: [0, -180, 120, -120, 0],
-            scale: [1, 1.3, 0.7, 1.2, 1],
-            rotate: [0, 180, 360, 180, 0],
-            opacity: [0.3, 0.8, 0.3, 0.6, 0.3],
+            y: [0, -50, 0],
+            x: [0, 30, 0],
+            opacity: isHovered ? [0.4, 0.7, 0.4] : [0.2, 0.4, 0.2],
+            scale: isHovered ? [1, 1.1, 1] : [1, 1.05, 1],
           }}
           transition={{
             duration: element.duration,
-            delay: element.delay,
             repeat: Infinity,
-            ease: "easeInOut",
-          }}          initial={{
-            x: element.startX,
-            y: element.startY,
+            delay: element.delay,
+            ease: "easeInOut"
           }}
         />
       ))}
 
-      {/* AI Network Connections */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20" style={{ zIndex: 1 }}>
-        <defs>
-          <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.6" />
-            <stop offset="50%" stopColor="#f59e0b" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#22c55e" stopOpacity="0.3" />
-          </linearGradient>
-        </defs>
-        {[...Array(8)].map((_, i) => (
-          <motion.line
-            key={i}
-            x1={`${(i * 15) % 100}%`}
-            y1={`${(i * 20) % 100}%`}
-            x2={`${((i + 3) * 15) % 100}%`}
-            y2={`${((i + 3) * 20) % 100}%`}
-            stroke="url(#connectionGradient)"
-            strokeWidth="1"
-            strokeDasharray="5,5"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: [0, 0.8, 0] }}
-            transition={{
-              duration: 3 + i * 0.5,
-              repeat: Infinity,
-              delay: i * 0.5,
-              ease: "easeInOut"
-            }}
-          />
-        ))}
+      {/* Neural network connections */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20" xmlns="http://www.w3.org/2000/svg">
+        {floatingElements.map((element1, i) => {
+          return floatingElements.slice(i + 1).map((element2, j) => {
+            const opacity = (i + j) % 2 === 0 ? 0.2 : 0.15;
+            return (
+              <motion.line
+                key={`line-${i}-${j}`}
+                x1={element1.startX + element1.size / 2}
+                y1={element1.startY + element1.size / 2}
+                x2={element2.startX + element2.size / 2}
+                y2={element2.startY + element2.size / 2}
+                stroke="#06b6d4"
+                strokeWidth={1}
+                strokeOpacity={opacity}
+                strokeDasharray="5,5"
+                animate={{
+                  strokeOpacity: [opacity, opacity * 2, opacity],
+                }}
+                transition={{
+                  duration: 3 + i * 0.5,
+                  repeat: Infinity,
+                  delay: i * 0.5,
+                  ease: "easeInOut"
+                }}
+              />
+            )
+          });
+        })}
       </svg>
 
       {/* Interactive 3D Background Grid */}
@@ -142,7 +141,9 @@ export default function HeroSection() {
         className="absolute inset-0 opacity-30"
         style={{
           background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(6, 182, 212, 0.4) 0%, rgba(251, 146, 60, 0.2) 30%, transparent 70%)`,
-        }}      />      
+        }}      
+      />      
+      
       {/* AI Monitoring Interactive Elements */}
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden">
         {/* Circular radar animation */}
@@ -171,32 +172,49 @@ export default function HeroSection() {
             ease: "linear" 
           }}
         />
+        <motion.div
+          className="absolute w-[300px] h-[300px] border-2 border-emerald-400/20 rounded-full"
+          animate={{ 
+            scale: [1.2, 0.9, 1.2], 
+            opacity: [0.1, 0.2, 0.1],
+          }}
+          transition={{ 
+            duration: 6, 
+            repeat: Infinity, 
+            ease: "easeInOut" 
+          }}
+        />
         
-        {/* Driver monitoring indicators */}
-        {[1, 2, 3, 4, 5].map((i) => (
-          <motion.div
-            key={`indicator-${i}`}
-            className="absolute w-3 h-3 rounded-full bg-emerald-400/70"
-            animate={{
-              scale: [1, 1.5, 1],
-              opacity: [0.5, 0.9, 0.5],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              delay: i * 0.4,
-              ease: "easeInOut"
-            }}
-            style={{
-              left: `${30 + i * 10}%`,
-              top: `${35 + (i % 3) * 10}%`
-            }}
-          />
-        ))}
+        {/* Scanning lines */}
+        <motion.div
+          className="absolute w-[80%] h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"
+          animate={{ 
+            y: [-150, 150], 
+            opacity: [0, 0.5, 0]
+          }}
+          transition={{ 
+            duration: 3, 
+            repeat: Infinity, 
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute w-[1px] h-[80%] bg-gradient-to-b from-transparent via-amber-400/50 to-transparent"
+          animate={{ 
+            x: [-150, 150], 
+            opacity: [0, 0.5, 0]
+          }}
+          transition={{ 
+            duration: 4, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            delay: 1
+          }}
+        />
         
-        {/* Safety alert pulses */}
-        {[1, 2, 3].map((i) => (
-          <motion.div
+        {/* Alert indicators */}
+        {[...Array(3)].map((_, i) => (
+          <motion.div 
             key={`alert-${i}`}
             className="absolute w-4 h-4 rounded-full bg-amber-500/70"
             animate={{
@@ -215,8 +233,11 @@ export default function HeroSection() {
             }}
           />
         ))}
-      </div>      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center py-20">
+          {/* Left Column - Content */}
           <motion.div
             style={{
               rotateX: rotateX,
@@ -228,71 +249,59 @@ export default function HeroSection() {
             transition={{ duration: 0.8 }}
             className="text-center lg:text-left"
           >
-            {/* 3D Title with Depth */}
             <div className="mb-10 relative z-10">
-            {/* Main Title with 3D effect and highlight */}
-            <motion.h1 
-              className="text-4xl md:text-6xl font-bold text-white relative hero-title z-20"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              style={{ position: "relative", zIndex: 30 }}
-            >              {/* Logo/Branding Element */}
-              <div className="flex items-center justify-center mb-2 relative z-30">
-                <motion.div className="w-14 h-14 mr-4 bg-cyan-600/80 rounded-xl flex items-center justify-center relative overflow-hidden"
-                  whileHover={{ 
-                    scale: 1.05,
-                    rotate: 5
-                  }}
-                  style={{ position: "relative", zIndex: 30 }}
-                >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-tr from-cyan-600 to-blue-700"
-                    animate={{
-                      backgroundPosition: ["0% 0%", "100% 100%"],
-                    }}
-                    transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
-                  />
-                  <Security className="text-white w-8 h-8 relative z-10" />
-                </motion.div>                <div className="text-left relative z-30">
-                  <motion.div
-                    className="relative inline-block"
-                    whileHover={{ scale: 1.03 }}
-                    style={{ position: "relative", zIndex: 30 }}
+              {/* Main Title with 3D effect and highlight */}
+              <motion.h1 
+                className="text-4xl md:text-6xl font-bold text-white relative hero-title"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                {/* Logo/Branding Element */}
+                <div className="flex items-center justify-center lg:justify-start mb-2">
+                  <motion.div 
+                    className="mr-3 flex items-center"
+                    whileHover={{ rotate: [0, -10, 10, -5, 0], scale: 1.05 }}
+                    transition={{ duration: 0.5 }}
                   >
-                    <div className="relative flex items-center">                      <motion.div
-                        className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
-                        animate={{
-                          filter: [
-                            "drop-shadow(0 0 10px rgba(6, 182, 212, 0.5))",
-                            "drop-shadow(0 0 20px rgba(6, 182, 212, 0.7))",
-                            "drop-shadow(0 0 10px rgba(6, 182, 212, 0.5))"
-                          ]
-                        }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        style={{ 
-                          position: "relative", 
-                          zIndex: 30,
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: "transparent"
-                        }}
-                      >
-                        DriverGuard
-                      </motion.div>
-                      <motion.span 
-                        className="ml-3 text-amber-400 font-black relative"
-                        animate={{
-                          scale: [1, 1.1, 1],
-                        }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                        style={{ display: "inline-block" }}
-                      >
-                        AI
-                      </motion.span>
-                    </div>
+                    <Security className="text-4xl text-cyan-400 mr-2" />
+                  </motion.div>
+                  <motion.div 
+                    className="bg-clip-text"
+                    animate={{
+                      opacity: [0.9, 1, 0.9]
+                    }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                  >
+                                      <motion.span
+                                          className="text-6xl font-bold text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text"
+                                          style={{
+                                              backgroundSize: "200% 200%"
+                                          }}
+                                          animate={{
+                                              backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"]
+                                          }}
+                                          transition={{
+                                              duration: 3,
+                                              repeat: Infinity,
+                                              ease: "linear"
+                                          }}
+                                      >
+                                          DriverGuard
+                                      </motion.span>
+                    <motion.span 
+                      className="ml-3 text-amber-400 font-black relative"
+                      animate={{
+                        scale: [1, 1.1, 1],
+                      }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                      style={{ display: "inline-block" }}
+                    >
+                      AI
+                    </motion.span>
                   </motion.div>
                 </div>
-              </div>
+              </motion.h1>
               
               {/* Tagline with AI monitoring theme */}
               <motion.div 
@@ -304,7 +313,7 @@ export default function HeroSection() {
                 <span className="block text-2xl text-cyan-300 font-medium tracking-wide">Real-Time Driver Monitoring Platform</span>
                 
                 {/* Interactive indicators */}
-                <div className="flex justify-center items-center gap-2 mt-3">
+                <div className="flex justify-center lg:justify-start items-center gap-2 mt-3">
                   <motion.div 
                     className="flex items-center px-3 py-1 border border-emerald-500/30 rounded-full bg-emerald-900/20"
                     whileHover={{ scale: 1.05 }}
@@ -318,7 +327,7 @@ export default function HeroSection() {
                     transition={{ duration: 2, repeat: Infinity }}
                   >
                     <div className="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></div>
-                    <span className="text-sm text-emerald-400">Safety</span>
+                    <span className="text-sm text-emerald-400">Online</span>
                   </motion.div>
                   
                   <motion.div 
@@ -354,290 +363,239 @@ export default function HeroSection() {
                   </motion.div>
                 </div>
               </motion.div>
-            </motion.h1>
-          </div>
-            <motion.div
-            className="relative z-10"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-          >
-            <motion.p 
-              className="text-xl md:text-xl text-white/80 mb-8 max-w-2xl mx-auto font-light"
-              style={{ transform: "translateZ(30px)" }}
-            >
-              <span className="text-cyan-300 font-medium">{">"}</span>{" "}
-              {fullText.substring(0, typingIndex)}
-              <motion.span 
-                className="inline-block w-0.5 h-5 bg-cyan-400 ml-1"
-                animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 1, repeat: Infinity }}
-              />
-            </motion.p>
-          </motion.div>
-
-          {/* 3D Interactive Buttons */}
-          <motion.div 
-            className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
-            style={{ transform: "translateZ(40px)" }}
-          >
-            <motion.div
-              whileHover={{ 
-                scale: 1.1, 
-                rotateY: 5,
-                rotateX: -5,
-                z: 50 
-              }}
-              whileTap={{ scale: 0.95 }}
-              style={{ transformStyle: "preserve-3d" }}
-            >
-              <Link
-                href="/auth/login?role=driver"
-                className="bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all shadow-2xl flex items-center justify-center gap-2 relative overflow-hidden"
-                style={{
-                  boxShadow: `
-                    0 10px 30px rgba(6, 182, 212, 0.4),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.2)
-                  `
-                }}
-              >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                  animate={{ x: ["-100%", "100%"] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                />
-                <PlayArrow />
-                Try Driver Demo
-              </Link>
-            </motion.div>
+            </div>
             
             <motion.div
-              whileHover={{ 
-                scale: 1.1, 
-                rotateY: -5,
-                rotateX: 5,
-                z: 50 
-              }}
-              whileTap={{ scale: 0.95 }}
-              style={{ transformStyle: "preserve-3d" }}
+              className="relative z-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
             >
-              <Link
-                href="/auth/login?role=admin"
-                className="bg-white/10 hover:bg-white/20 text-white border-2 border-white/30 px-8 py-4 rounded-lg font-semibold text-lg transition-all backdrop-blur-sm shadow-2xl flex items-center justify-center gap-2 relative overflow-hidden"
-                style={{
-                  boxShadow: `
-                    0 10px 30px rgba(255, 255, 255, 0.1),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.2)
-                  `
-                }}
+              <motion.p 
+                className="text-xl md:text-xl text-white/80 mb-8 max-w-2xl mx-auto lg:mx-0 font-light"
+                style={{ transform: "translateZ(30px)" }}
               >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                  animate={{ x: ["-100%", "100%"] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 2 }}
+                <span className="text-cyan-300 font-medium">{">"}</span>{" "}
+                {fullText.substring(0, typingIndex)}
+                <motion.span 
+                  className="inline-block w-0.5 h-5 bg-cyan-400 ml-1"
+                  animate={{ opacity: [0, 1, 0] }}
+                  transition={{ duration: 1, repeat: Infinity }}
                 />
-                <Security />
-                Admin Dashboard
-              </Link>
+              </motion.p>
             </motion.div>
-          </motion.div>          {/* 3D Interactive Feature Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto lg:max-w-none">
-            {[
-              {
-                icon: Visibility,
-                title: "Drowsiness Detection",
-                description: "AI monitors eye closure and yawning patterns",
-                color: "from-amber-500 to-orange-600",
-                delay: 0.2
-              },
-              {
-                icon: Security,
-                title: "Phone Usage Alert", 
-                description: "Detects distracted driving behaviors",
-                color: "from-emerald-500 to-teal-600",
-                delay: 0.4
-              },
-              {
-                icon: Speed,
-                title: "Speed Monitoring",
-                description: "GPS-based overspeed detection and alerts",
-                color: "from-cyan-500 to-blue-600",
-                delay: 0.6
-              }
-            ].map((feature, index) => (
+
+            {/* 3D Interactive Buttons */}
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12"
+              style={{ transform: "translateZ(40px)" }}
+            >
               <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20, rotateX: -30 }}
-                animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                transition={{ duration: 0.8, delay: feature.delay }}
                 whileHover={{ 
-                  y: -10,
-                  rotateX: 10,
+                  scale: 1.1, 
                   rotateY: 5,
-                  scale: 1.05,
-                  transition: { duration: 0.3 }
+                  rotateX: -5,
+                  z: 50 
                 }}
-                style={{ 
-                  transformStyle: "preserve-3d",
-                  transform: "translateZ(20px)",
-                }}
-                className="relative group cursor-pointer"
+                whileTap={{ scale: 0.95 }}
+                style={{ transformStyle: "preserve-3d" }}
               >
-                {/* Card Background with Gradient */}
-                <div className="glass-effect p-6 rounded-lg relative overflow-hidden backdrop-blur-md border border-white/20">
-                  {/* Animated Background Gradient */}
+                <Link
+                  href="/auth/login?role=driver"
+                  className="bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all shadow-2xl flex items-center justify-center gap-2 relative overflow-hidden"
+                  style={{
+                    boxShadow: `
+                      0 10px 30px rgba(8, 145, 178, 0.4),
+                      inset 0 -3px 0 rgba(0, 0, 0, 0.1),
+                      inset 0 1px 0 rgba(255, 255, 255, 0.2)
+                    `
+                  }}
+                >
                   <motion.div
-                    className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}
-                    animate={{
-                      rotate: [0, 360],
-                      scale: [1, 1.05, 1],
-                    }}
-                    transition={{ 
-                      duration: 3, 
-                      repeat: Infinity,
-                      ease: "linear"
-                    }}
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                    animate={{ x: ["-100%", "100%"] }}
+                    transition={{ duration: 1.5, repeat: Infinity, delay: 1 }}
                   />
-                  
-                  {/* 3D Icon */}
+                  <PlayArrow />
+                  Try Driver Demo
+                </Link>
+              </motion.div>
+              
+              <motion.div
+                whileHover={{ 
+                  scale: 1.1, 
+                  rotateY: -5,
+                  rotateX: 5,
+                  z: 50 
+                }}
+                whileTap={{ scale: 0.95 }}
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <Link
+                  href="/auth/login?role=admin"
+                  className="bg-white/10 hover:bg-white/20 text-white border-2 border-white/30 px-8 py-4 rounded-lg font-semibold text-lg transition-all backdrop-blur-sm shadow-2xl flex items-center justify-center gap-2 relative overflow-hidden"
+                  style={{
+                    boxShadow: `
+                      0 10px 30px rgba(255, 255, 255, 0.1),
+                      inset 0 1px 0 rgba(255, 255, 255, 0.2)
+                    `
+                  }}
+                >
                   <motion.div
-                    className="relative z-10"
-                    whileHover={{ 
-                      scale: 1.2, 
-                      rotateY: 360,
-                      transition: { duration: 0.6 }
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                    animate={{ x: ["-100%", "100%"] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 2 }}
+                  />
+                  <Security />
+                  Admin Dashboard
+                </Link>
+              </motion.div>
+            </motion.div>
+
+            {/* 3D Interactive Feature Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 max-w-4xl mx-auto lg:mx-0">
+              {[
+                {
+                  icon: Visibility,
+                  title: "Smart Monitoring",
+                  description: "Real-time drowsiness detection",
+                  color: "from-cyan-500 to-blue-600"
+                },
+                {
+                  icon: Speed,
+                  title: "Behavior Analytics",
+                  description: "Detect unsafe driving patterns",
+                  color: "from-amber-500 to-orange-600"
+                },
+                {
+                  icon: Security,
+                  title: "Enhanced Safety",
+                  description: "Reduce incidents by up to 60%",
+                  color: "from-emerald-500 to-green-600"
+                }
+              ].map((feature, index) => (
+                <motion.div
+                  key={feature.title}
+                  className="relative"
+                  initial={{ opacity: 0, y: 20, rotateZ: -5 }}
+                  animate={{ opacity: 1, y: 0, rotateZ: 0 }}
+                  transition={{ delay: 0.7 + index * 0.1, duration: 0.8, type: "spring" }}
+                  whileHover={{
+                    translateY: -10,
+                    rotateZ: 0,
+                    transition: { duration: 0.2, ease: "easeOut" }
+                  }}
+                >
+                  <motion.div
+                    className="bg-black/20 backdrop-blur-sm rounded-xl p-4 border border-white/10 relative overflow-hidden shadow-xl"
+                    style={{
+                      transformStyle: "preserve-3d",
+                      transform: "translateZ(20px)",
+                      boxShadow: "0 10px 30px -5px rgba(0, 0, 0, 0.3)"
                     }}
-                    style={{ transform: "translateZ(30px)" }}
                   >
-                    <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br ${feature.color} p-3 shadow-lg`}>
-                      <feature.icon className="text-white text-4xl w-full h-full" />
+                    <motion.div
+                      className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-10`}
+                      animate={{
+                        opacity: [0.1, 0.15, 0.1]
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        delay: index * 0.5
+                      }}
+                    />
+                    
+                    <div className="flex items-start space-x-4 relative z-10">
+                      <motion.div
+                        className={`rounded-lg p-2 bg-gradient-to-br ${feature.color}`}
+                        whileHover={{ rotate: [0, -10, 10, -5, 0], scale: 1.1 }}
+                        transition={{ duration: 0.5 }}
+                        style={{
+                          boxShadow: "0 8px 16px -2px rgba(0, 0, 0, 0.2)",
+                        }}
+                      >
+                        <feature.icon className="text-white text-xl" />
+                      </motion.div>
+                      
+                      <div>
+                        <h3 className="font-bold text-white">{feature.title}</h3>
+                        <p className="text-white/70 text-sm">{feature.description}</p>
+                      </div>
                     </div>
                   </motion.div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
 
-                  {/* Content */}
-                  <motion.div 
-                    className="relative z-10"
-                    style={{ transform: "translateZ(20px)" }}
-                  >
-                    <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-cyan-300 transition-colors">
-                      {feature.title}
-                    </h3>
-                    <p className="text-white/80 group-hover:text-white transition-colors">
-                      {feature.description}
-                    </p>
-                  </motion.div>
-
-                  {/* Hover Effect Border */}
-                  <motion.div
-                    className="absolute inset-0 rounded-lg border-2 border-transparent group-hover:border-cyan-400/50 transition-all duration-300"
-                    whileHover={{
-                      boxShadow: `
-                        0 0 30px rgba(6, 182, 212, 0.4),
-                        inset 0 0 30px rgba(255, 255, 255, 0.1)
-                      `
-                    }}
-                  />
-                </div>
-
-                {/* Floating Particles */}
-                {[...Array(3)].map((_, particleIndex) => (
-                  <motion.div
-                    key={particleIndex}
-                    className="absolute w-2 h-2 bg-cyan-400/60 rounded-full"
-                    style={{
-                      top: `${20 + particleIndex * 20}%`,
-                      right: `${10 + particleIndex * 15}%`,
-                    }}
-                    animate={{
-                      y: [0, -20, 0],
-                      opacity: [0.3, 1, 0.3],
-                      scale: [1, 1.5, 1],
-                    }}
-                    transition={{
-                      duration: 2 + particleIndex * 0.5,
-                      repeat: Infinity,
-                      delay: particleIndex * 0.3,
-                    }}
-                  />
-                ))}
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </div>      {/* Interactive Cursor Effect */}
-      {isHovered && (
-        <motion.div
-          className="fixed pointer-events-none z-50 w-8 h-8 border-2 border-cyan-400/60 rounded-full mix-blend-screen cursor-effect"
-          style={{
-            left: mousePosition.x - 16,
-            top: mousePosition.y - 16,
-            background: 'radial-gradient(circle, rgba(6, 182, 212, 0.3) 0%, transparent 70%)',
-          }}
-          animate={{
-            opacity: [0.5, 0.7, 1, 0.7, 0.5],
-            scale: [1, 1.2, 1.4, 1.2, 1],
-          }}
-          transition={{
-            duration: 1,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-      )}
-
-      {/* AI Brain Visualization */}
-      <div className="absolute top-10 right-10 opacity-20">        <motion.div
-          className="relative w-32 h-32"
-          animate={{ 
-            rotateY: [0, 180, 360, 180, 0],
-            scale: [1, 1.1, 1, 1.1, 1]
-          }}
-          transition={{ 
-            duration: 8, 
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        >
-          {/* Brain outline */}
-          <svg viewBox="0 0 100 100" className="w-full h-full">
-            <path
-              d="M30 20 Q20 10, 35 10 Q50 5, 65 10 Q80 10, 70 20 Q75 35, 70 50 Q75 65, 65 75 Q50 80, 35 75 Q20 65, 25 50 Q20 35, 30 20"
-              fill="none"
-              stroke="url(#brainGradient)"
-              strokeWidth="1.5"
-              strokeDasharray="2,2"
-            />
-            <defs>
-              <linearGradient id="brainGradient">
-                <stop offset="0%" stopColor="#06b6d4" />
-                <stop offset="100%" stopColor="#f59e0b" />
-              </linearGradient>
-            </defs>
-            {/* Neural connections */}
-            {[...Array(6)].map((_, i) => (
-              <motion.circle
-                key={i}
-                cx={30 + i * 8}
-                cy={30 + (i % 2) * 20}
-                r="1.5"
-                fill="#06b6d4"
-                animate={{ opacity: [0.3, 1, 0.3] }}
-                transition={{ 
-                  duration: 1.5, 
-                  repeat: Infinity, 
-                  delay: i * 0.2 
+          {/* Right Column - Image */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4, duration: 1 }}
+            className="hidden lg:flex items-center justify-center mt-10 lg:mt-0"
+          >
+            <motion.div
+              className="relative rounded-2xl overflow-hidden border-4 border-cyan-500/30 shadow-2xl shadow-cyan-500/20"
+              whileHover={{ scale: 1.03 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              {/* Glowing overlay */}
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 mix-blend-overlay"
+                animate={{ 
+                  opacity: [0.4, 0.7, 0.4] 
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  repeatType: "reverse"
                 }}
               />
-            ))}
-          </svg>
-        </motion.div>
+              
+              <img 
+                src="/driving.gif" 
+                alt="AI Driver Monitoring in action" 
+                className="w-full max-w-lg rounded-xl object-cover"
+              />
+              
+              {/* Live indicator */}
+              <div className="absolute top-4 left-4 flex items-center space-x-2 bg-black/60 px-3 py-1 rounded-full backdrop-blur-sm">
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                <span className="text-sm text-white font-medium">LIVE</span>
+              </div>
+
+              {/* AI Analysis overlay */}
+              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                <div className="flex items-center text-cyan-300 text-sm mb-1">
+                  <span className="mr-2">●</span>
+                  <span className="font-mono">AI Analysis: Driver state normal</span>
+                </div>
+                <div className="flex space-x-2">
+                  <motion.div 
+                    className="h-1.5 flex-grow bg-gray-700/50 rounded-full overflow-hidden"
+                    style={{ transformOrigin: "left" }}
+                  >
+                    <motion.div 
+                      className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full"
+                      animate={{ width: ["20%", "80%", "40%", "60%", "20%"] }}
+                      transition={{ duration: 8, repeat: Infinity }}
+                    />
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
       </div>
 
       {/* Safety Radar Effect */}
       <div className="absolute bottom-10 left-10 opacity-30">
         <motion.div className="relative w-24 h-24">
           <motion.div
-            className="absolute inset-0 border-2 border-emerald-400 rounded-full"            animate={{ 
+            className="absolute inset-0 border-2 border-emerald-400 rounded-full"            
+            animate={{ 
               scale: [1, 1.5, 2, 1.5, 1],
               opacity: [0.8, 0.4, 0, 0.4, 0.8]
             }}
@@ -648,7 +606,8 @@ export default function HeroSection() {
             }}
           />
           <motion.div
-            className="absolute inset-2 border border-amber-400 rounded-full"            animate={{ 
+            className="absolute inset-2 border border-amber-400 rounded-full"            
+            animate={{ 
               scale: [1, 1.25, 1.5, 1.25, 1],
               opacity: [0.6, 0.3, 0, 0.3, 0.6]
             }}

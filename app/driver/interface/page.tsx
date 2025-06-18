@@ -24,7 +24,7 @@ interface Incident {
   type: 'drowsiness' | 'phone' | 'overspeed';
   confidence: number;
   timestamp: Date;
-  location?: { lat: number; lng: number };
+  location: { lat: number; lng: number; } | null;
 }
 
 interface TripData {

@@ -3,40 +3,14 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Check from '@mui/icons-material/Check';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import VolumeUp from '@mui/icons-material/VolumeUp';
 
 const plans = [
   {
     name: 'Starter',
     price: 15,
-    period:                <motion.div 
-                  className="relative group"
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  {plan.popular && (
-                    <motion.div 
-                      className="absolute -inset-1 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-500 opacity-70 blur-sm group-hover:opacity-100 group-hover:blur-md transition-all duration-300"
-                      animate={{
-                        opacity: [0.5, 0.7, 0.5]
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        repeatType: "reverse"
-                      }}
-                    />
-                  )}
-                  <Link
-                    href="/auth/login"
-                    className={`relative block w-full text-center py-3 px-6 rounded-lg font-semibold transition-all ${
-                      plan.popular
-                        ? 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40'
-                        : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white hover:shadow-md'
-                    }`}
-                  >
-                    Get Started
-                  </Link>
-                </motion.div>onth',
+    period: 'per vehicle/month',
     description: 'Perfect for small fleets and individual drivers',
     features: [
       'Real-time drowsiness detection',
@@ -50,7 +24,7 @@ const plans = [
   },
   {
     name: 'Professional',
-    price: 25,
+    price: 40,
     period: 'per vehicle/month',
     description: 'Advanced features for growing fleets',
     features: [
@@ -67,14 +41,15 @@ const plans = [
   },
   {
     name: 'Enterprise',
-    price: 40,
+    price: 60,
     period: 'per vehicle/month',
-    description: 'Complete solution for large organizations',
+    description: 'Complete solution for large fleets',
     features: [
       'All Professional features',
-      'Multi-language support',
-      'Custom integrations',
       'Dedicated account manager',
+      'Custom integration',
+      'On-premise deployment option',
+      'SSO authentication',
       '24/7 phone support',
       'Custom training',
       'SLA guarantee',
@@ -133,10 +108,10 @@ export default function PricingSection() {
                   ? 'ring-2 ring-cyan-500 shadow-cyan-500/20 z-10 scale-105 md:scale-110 pricing-card-popular' 
                   : 'pricing-card'
               }`}
-            >
-              {plan.popular && (
+            >              {plan.popular && (
                 <motion.div 
-                  className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20"
+                  className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-30"
+                  style={{ width: "150px", pointerEvents: "none" }}
                   initial={{ y: -10, opacity: 0 }}
                   whileInView={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.5, duration: 0.5 }}
@@ -156,7 +131,7 @@ export default function PricingSection() {
                       }}
                     />
                     <motion.span 
-                      className="relative block bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium"
+                      className="relative block bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-1 rounded-full text-sm font-bold text-center shadow-lg"
                       animate={{ 
                         boxShadow: [
                           "0 0 0 rgba(6, 182, 212, 0.3)",
@@ -226,13 +201,27 @@ export default function PricingSection() {
                 transition={{ delay: index * 0.2 + 0.5 }}
                 viewport={{ once: true }}
               >
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
+                <motion.div 
+                  className="relative group"
+                  whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
                 >
+                  {plan.popular && (
+                    <motion.div 
+                      className="absolute -inset-1 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-500 opacity-70 blur-sm group-hover:opacity-100 group-hover:blur-md transition-all duration-300"
+                      animate={{
+                        opacity: [0.5, 0.7, 0.5]
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        repeatType: "reverse"
+                      }}
+                    />
+                  )}
                   <Link
                     href="/auth/login"
-                    className={`block w-full text-center py-3 px-6 rounded-lg font-semibold transition-all ${
+                    className={`relative block w-full text-center py-3 px-6 rounded-lg font-semibold transition-all ${
                       plan.popular
                         ? 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40'
                         : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white hover:shadow-md'
