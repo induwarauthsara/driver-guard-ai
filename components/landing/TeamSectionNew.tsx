@@ -9,15 +9,15 @@ import GitHub from '@mui/icons-material/GitHub';
 const team = [
   {
     name: 'Induwara Uthsara',
-    role: 'Code Wizard & Digital Architect',
+    role: 'System Architect & Code Wizard',
     image: '/induwara.png',
-    bio: 'Builder of everything you see and click. From pixels to databases — if it works, I probably wrote it.',
+    bio: 'The entire web platform — from interface to backend — crafted into a fully working system.',
     expertise: ['Frontend Sorcery', 'Backend Wizardry', 'Tech Problem Solver'],
-    funFact: 'First-year tech enthusiast at UCSC who can debug with one eye closed',
+        funFact: 'First-year tech enthusiast at UCSC who builds full systems while others draft ideas.',
     social: {
-      linkedin: '#',
-      twitter: '#',
-      github: '#'
+      linkedin: 'https://www.linkedin.com/in/induwarauthsara/',
+      web: 'https://induwara.dev/',
+      github: 'https://github.com/induwarauthsara'
     }
   },
   {
@@ -28,8 +28,8 @@ const team = [
     expertise: ['Concept Development', 'Software Engineering', 'Problem Solving'],
     funFact: 'First-year UCSC student who sketches algorithms while others sketch doodles',
     social: {
-      linkedin: '#',
-      twitter: '#',
+      linkedin: 'https://www.linkedin.com/in/sashikdevx/',
+      web: 'https://www.credly.com/users/sashik-thivanka'
       github: '#'
     }
   },
@@ -43,7 +43,7 @@ const team = [
     social: {
       linkedin: '#',
       twitter: '#',
-      github: '#'
+        github: 'nahlaishfaq2005'
     }
   }
 ];
