@@ -260,21 +260,21 @@ export default function HeroSection() {
                     whileHover={{ scale: 1.03 }}
                     style={{ position: "relative", zIndex: 30 }}
                   >
-                    <div className="relative flex items-center">
-                      <motion.div
-                        className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 text-5xl md:text-6xl font-extrabold"
+                    <div className="relative flex items-center">                      <motion.div
+                        className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent"
                         animate={{
-                          textShadow: [
-                            "0 0 10px rgba(6, 182, 212, 0.5)",
-                            "0 0 20px rgba(6, 182, 212, 0.7)",
-                            "0 0 10px rgba(6, 182, 212, 0.5)"
+                          filter: [
+                            "drop-shadow(0 0 10px rgba(6, 182, 212, 0.5))",
+                            "drop-shadow(0 0 20px rgba(6, 182, 212, 0.7))",
+                            "drop-shadow(0 0 10px rgba(6, 182, 212, 0.5))"
                           ]
                         }}
                         transition={{ duration: 2, repeat: Infinity }}
                         style={{ 
                           position: "relative", 
                           zIndex: 30,
-                          WebkitBackgroundClip: "text"
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent"
                         }}
                       >
                         DriverGuard

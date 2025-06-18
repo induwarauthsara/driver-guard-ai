@@ -396,7 +396,7 @@ export default function DriverInterface() {
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <VolumeUpIcon className={audioEnabled ? 'text-blue-500' : 'text-gray-400'} />
+                    <VolumeUp className={audioEnabled ? 'text-blue-500' : 'text-gray-400'} />
                     <span className="text-gray-700 dark:text-gray-300">Audio Alerts</span>
                   </div>
                   <button
