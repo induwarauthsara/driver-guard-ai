@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import Security from '@mui/icons-material/Security';
+import Shield from '@mui/icons-material/Shield';
 import Visibility from '@mui/icons-material/Visibility';
 import Speed from '@mui/icons-material/Speed';
 
@@ -250,55 +251,122 @@ export default function HeroSection() {
             className="text-center lg:text-left"
           >
             <div className="mb-10 relative z-10">
-              {/* Main Title with 3D effect and highlight */}
-              <motion.h1 
+              {/* Main Title with 3D effect and highlight */}              <motion.h1 
                 className="text-4xl md:text-6xl font-bold text-white relative hero-title"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
               >
                 {/* Logo/Branding Element */}
-                <div className="flex items-center justify-center lg:justify-start mb-2">
-                  <motion.div 
+                <div className="flex items-center justify-center lg:justify-start mb-2">                  <motion.div 
                     className="mr-3 flex items-center"
                     whileHover={{ rotate: [0, -10, 10, -5, 0], scale: 1.05 }}
                     transition={{ duration: 0.5 }}
                   >
                     <Security className="text-4xl text-cyan-400 mr-2" />
                   </motion.div>
+                  
                   <motion.div 
-                    className="bg-clip-text"
+                    className="relative"
                     animate={{
                       opacity: [0.9, 1, 0.9]
                     }}
                     transition={{ duration: 3, repeat: Infinity }}
                   >
-                                      <motion.span
-                                          className="text-6xl font-bold text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text"
-                                          style={{
-                                              backgroundSize: "200% 200%"
-                                          }}
-                                          animate={{
-                                              backgroundPosition: ["0% 0%", "100% 100%", "0% 0%"]
-                                          }}
-                                          transition={{
-                                              duration: 3,
-                                              repeat: Infinity,
-                                              ease: "linear"
-                                          }}
-                                      >
-                                          DriverGuard
-                                      </motion.span>
-                    <motion.span 
-                      className="ml-3 text-amber-400 font-black relative"
+                    {/* Glowing background effect */}                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-blue-500/10 rounded-lg blur-lg"
                       animate={{
                         scale: [1, 1.1, 1],
+                        opacity: [0.2, 0.4, 0.2]
                       }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                      style={{ display: "inline-block" }}
-                    >
-                      AI
-                    </motion.span>
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    />
+                    
+                    {/* Main text container */}
+                    <div className="relative z-10 flex items-center">                      <motion.span
+                        className="text-6xl font-bold text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text"
+                        style={{
+                          backgroundSize: "200% 200%",
+                          filter: "drop-shadow(0 0 8px rgba(34, 211, 238, 0.3))"
+                        }}
+                        animate={{
+                          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
+                        }}
+                        transition={{
+                          duration: 4,
+                          repeat: Infinity,
+                          ease: "linear"
+                        }}
+                      >
+                        DriverGuard
+                      </motion.span>
+                      
+                      <motion.span 
+                        className="ml-3 text-amber-400 font-black relative text-6xl"
+                        animate={{
+                          scale: [1, 1.15, 1],
+                          textShadow: [
+                            "0 0 10px rgba(251, 191, 36, 0.5)",
+                            "0 0 30px rgba(251, 191, 36, 0.8)",
+                            "0 0 10px rgba(251, 191, 36, 0.5)"
+                          ]
+                        }}
+                        transition={{ 
+                          duration: 2, 
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                        style={{ 
+                          display: "inline-block",
+                          filter: "drop-shadow(0 0 15px rgba(251, 191, 36, 0.6))"
+                        }}
+                      >
+                        AI
+                        {/* Sparkle effect for AI */}
+                        <motion.div
+                          className="absolute -top-2 -right-2 w-3 h-3 bg-amber-300 rounded-full"
+                          animate={{
+                            scale: [0, 1, 0],
+                            opacity: [0, 1, 0]
+                          }}
+                          transition={{
+                            duration: 1.5,
+                            repeat: Infinity,
+                            delay: 0.5
+                          }}
+                        />
+                        <motion.div
+                          className="absolute -bottom-1 -left-1 w-2 h-2 bg-yellow-400 rounded-full"
+                          animate={{
+                            scale: [0, 1, 0],
+                            opacity: [0, 1, 0]
+                          }}
+                          transition={{
+                            duration: 1.5,
+                            repeat: Infinity,
+                            delay: 1
+                          }}
+                        />
+                      </motion.span>
+                    </div>
+                    
+                    {/* Animated underline */}
+                    <motion.div
+                      className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-cyan-400 to-amber-400"
+                      initial={{ width: 0 }}
+                      animate={{ width: "100%" }}
+                      transition={{ 
+                        duration: 2, 
+                        delay: 1,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        repeatDelay: 1
+                      }}
+                    />
                   </motion.div>
                 </div>
               </motion.h1>
