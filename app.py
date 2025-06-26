@@ -8,6 +8,7 @@ import base64
 import threading
 import os
 import logging
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -101,7 +102,7 @@ def api_detect():
                 'ear': round(ear, 4),
                 'confidence': round(confidence, 4),
                 'threshold': EAR_THRESHOLD,
-                'timestamp': str(np.datetime64('now'))
+                'timestamp': datetime.now().isoformat()
             }
             
             if sleepy:
@@ -114,7 +115,7 @@ def api_detect():
                 'ear': 0,
                 'confidence': 0,
                 'error': 'No face detected',
-                'timestamp': str(np.datetime64('now'))
+                'timestamp': datetime.now().isoformat()
             })
             
     except Exception as e:
