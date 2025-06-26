@@ -11,12 +11,8 @@ Write-Host "[INFO] This will connect your GitHub repository to Azure App Service
 Write-Host ""
 
 # Prompt for GitHub repository URL
-$GitHubRepo = Read-Host "Enter your GitHub repository URL (e.g., https://github.com/yourusername/driverguardai)"
-
-if ([string]::IsNullOrWhiteSpace($GitHubRepo)) {
-    Write-Host "[ERROR] GitHub repository URL is required!" -ForegroundColor Red
-    exit 1
-}
+$GitHubRepo = "https://github.com/induwarauthsara/driver-guard-ai.git"
+Write-Host "[INFO] Using repository: $GitHubRepo" -ForegroundColor Green
 
 Write-Host "[INFO] Connecting repository: $GitHubRepo" -ForegroundColor Yellow
 
