@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DriverGuard AI API Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+        }
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+        .success {
+            background: rgba(46, 204, 113, 0.3);
+        }
+        .error {
+            background: rgba(231, 76, 60, 0.3);
+        }
+        .warning {
+            background: rgba(241, 196, 15, 0.3);
+        }
+        .file-input {
+            display: none;
+        }
+        .file-label {
+            display: inline-block;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.3s;
+        }
+        .file-label:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        #preview {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚗 DriverGuard AI API Test</h1>
+        
+        <div class="input-group">
+            <label for="apiUrl">API URL:</label>
+            <input 
+                type="url" 
+                id="apiUrl" 
+                placeholder="https://your-app-name.azurewebsites.net/api/detect"
+                value="http://localhost:5000/api/detect"
+            >
+        </div>
+
+        <div class="input-group">
+            <label for="imageFile">Upload Test Image:</label>
+            <input type="file" id="imageFile" class="file-input" accept="image/*">
+            <label for="imageFile" class="file-label">📁 Choose Image File</label>
+            <img id="preview" style="display: none;">
+        </div>
+
+        <button onclick="testAPI()">🔍 Test Drowsiness Detection</button>
+
+        <div id="result" class="result">
+            <h3>API Response:</h3>
+            <pre id="response"></pre>
+        </div>
+    </div>
+
+    <script>
+        // Preview uploaded image
+        document.getElementById('imageFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        async function testAPI() {
+            const apiUrl = document.getElementById('apiUrl').value;
+            const imageFile = document.getElementById('imageFile').files[0];
+            const resultDiv = document.getElementById('result');
+            const responseDiv = document.getElementById('response');
+
+            if (!apiUrl) {
+                showResult('Please enter API URL', 'error');
+                return;
+            }
+
+            if (!imageFile) {
+                showResult('Please select an image file', 'error');
+                return;
+            }
+
+            try {
+                // Show loading
+                showResult('Processing image...', 'warning');
+
+                // Convert image to base64
+                const base64Image = await fileToBase64(imageFile);
+
+                // Make API request
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        image: base64Image
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                
+                // Display result
+                const formattedResult = JSON.stringify(result, null, 2);
+                let resultClass = 'success';
+                let resultText = `✅ API Test Successful!\n\n${formattedResult}`;
+
+                if (result.sleepy) {
+                    resultText = `⚠️ DROWSINESS DETECTED!\n\n${formattedResult}`;
+                    resultClass = 'warning';
+                }
+
+                showResult(resultText, resultClass);
+
+            } catch (error) {
+                console.error('API Test Error:', error);
+                showResult(`❌ API Test Failed!\n\nError: ${error.message}`, 'error');
+            }
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        function showResult(text, type) {
+            const resultDiv = document.getElementById('result');
+            const responseDiv = document.getElementById('response');
+            
+            responseDiv.textContent = text;
+            resultDiv.className = `result ${type}`;
+            resultDiv.style.display = 'block';
+        }
+
+        // Health check on page load
+        window.addEventListener('load', async function() {
+            const apiUrl = document.getElementById('apiUrl').value;
+            if (apiUrl) {
+                try {
+                    const healthUrl = apiUrl.replace('/api/detect', '/health');
+                    const response = await fetch(healthUrl);
+                    if (response.ok) {
+                        console.log('✅ API is healthy');
+                    }
+                } catch (error) {
+                    console.log('⚠️ Could not reach API health endpoint');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
