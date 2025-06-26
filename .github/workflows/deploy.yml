@@ -10,6 +10,9 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     
+    env:
+      PATH: "/usr/local/bin:$PATH"
+    
     steps:
     - uses: actions/checkout@v3
     
@@ -25,13 +28,13 @@ jobs:
         sudo apt-get install -y wget build-essential libopenblas-dev liblapack-dev
         wget https://github.com/Kitware/CMake/releases/download/v3.27.9/cmake-3.27.9-linux-x86_64.sh
         sudo sh cmake-3.27.9-linux-x86_64.sh --skip-license --prefix=/usr/local
-        export PATH="/usr/local/bin:$PATH"
+        # Make sure the new cmake is in PATH
+        echo "/usr/local/bin" >> $GITHUB_PATH
         cmake --version
         which cmake
     
     - name: Install Python dependencies
       run: |
-        export PATH="/usr/local/bin:$PATH"
         python -m pip install --upgrade pip
         # Install dlib with specific build options
         pip install dlib --no-cache-dir
