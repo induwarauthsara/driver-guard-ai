@@ -28,14 +28,22 @@ jobs:
         sudo apt-get install -y wget build-essential libopenblas-dev liblapack-dev
         wget https://github.com/Kitware/CMake/releases/download/v3.27.9/cmake-3.27.9-linux-x86_64.sh
         sudo sh cmake-3.27.9-linux-x86_64.sh --skip-license --prefix=/usr/local
-        # Make sure the new cmake is in PATH
+        # Make sure the new cmake is in PATH and accessible
+        sudo ln -sf /usr/local/bin/cmake /usr/bin/cmake
         echo "/usr/local/bin" >> $GITHUB_PATH
+        export PATH="/usr/local/bin:$PATH"
         cmake --version
         which cmake
+        # Verify the cmake version is correct
+        /usr/local/bin/cmake --version
     
     - name: Install Python dependencies
       run: |
+        export PATH="/usr/local/bin:$PATH"
         python -m pip install --upgrade pip
+        # Verify cmake is accessible and correct version
+        which cmake
+        cmake --version
         # Install dlib with specific build options
         pip install dlib --no-cache-dir
         # Install remaining dependencies
