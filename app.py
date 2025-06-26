@@ -10,157 +10,180 @@ import os
 import logging
 from datetime import datetime
 
+# Initialize Flask app
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+# Configure logging for production
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 logger = logging.getLogger(__name__)
 
+# Initialize MediaPipe Face Mesh
 mp_face_mesh = mp.solutions.face_mesh
-face_mesh = mp_face_mesh.FaceMesh(static_image_mode=False, max_num_faces=1, refine_landmarks=True)
+face_mesh = mp_face_mesh.FaceMesh(
+    static_image_mode=False, 
+    max_num_faces=1, 
+    refine_landmarks=True,
+    min_detection_confidence=0.5,
+    min_tracking_confidence=0.5
+)
 
+# Eye landmark indices for MediaPipe Face Mesh
+LEFT_EYE = [362, 385, 387, 263, 373, 380]
 RIGHT_EYE = [33, 160, 158, 133, 153, 144]
 
+# Drowsiness detection parameters
 sleep_frames = 0
 SLEEP_FRAMES_THRESHOLD = 15
 EAR_THRESHOLD = 0.25
 
-# Remove alarm functionality for cloud deployment
-# alarm_playing = False
-# alarm_wave_obj = None
-
-# try:
-#     alarm_wave_obj = sa.WaveObject.from_wave_file("Alarm.wav")
-# except Exception as e:
-#     print(f"Alarm sound loading failed: {e}")
-
-def calculate_ear(landmarks, indices, w, h):
-    left = [int(landmarks[indices[0]].x * w), int(landmarks[indices[0]].y * h)]
-    right = [int(landmarks[indices[3]].x * w), int(landmarks[indices[3]].y * h)]
-
-    top = [((landmarks[indices[1]].x + landmarks[indices[2]].x) / 2) * w,
-           ((landmarks[indices[1]].y + landmarks[indices[2]].y) / 2) * h]
-    bottom = [((landmarks[indices[4]].x + landmarks[indices[5]].x) / 2) * w,
-              ((landmarks[indices[4]].y + landmarks[indices[5]].y) / 2) * h]
-
-    eye_width = math.dist(left, right)
-    eye_height = math.dist(top, bottom)
-
-    return eye_height / eye_width if eye_width != 0 else 0
-
-def play_alarm():
-    # Alarm functionality removed for cloud deployment
-    # Just log the alert instead
-    logger.warning("DROWSINESS DETECTED - ALARM TRIGGERED")
-    pass
+def calculate_ear(landmarks, eye_indices):
+    """Calculate Eye Aspect Ratio (EAR) using MediaPipe landmarks"""
+    try:
+        # Convert landmarks to numpy array for easier calculation
+        points = []
+        for idx in eye_indices:
+            x = landmarks[idx].x
+            y = landmarks[idx].y
+            points.append([x, y])
+        
+        points = np.array(points)
+        
+        # Calculate EAR using the 6-point eye landmark formula
+        # EAR = (|p2-p6| + |p3-p5|) / (2 * |p1-p4|)
+        A = np.linalg.norm(points[1] - points[5])  # Vertical distance 1
+        B = np.linalg.norm(points[2] - points[4])  # Vertical distance 2  
+        C = np.linalg.norm(points[0] - points[3])  # Horizontal distance
+        
+        if C == 0:
+            return 0.3  # Default value to avoid division by zero
+            
+        ear = (A + B) / (2.0 * C)
+        return ear
+        
+    except Exception as e:
+        logger.error(f"Error calculating EAR: {e}")
+        return 0.3  # Default safe value
 
 @app.route('/')
 def index():
+    """Home page"""
     return render_template('index.html')
 
 @app.route('/health')
 def health():
-    """Health check endpoint for Azure App Service"""
-    return jsonify({'status': 'healthy', 'service': 'drowsiness-detection-api'})
+    """Health check endpoint"""
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'version': '1.0.0',
+        'service': 'DriverGuard AI'
+    })
 
 @app.route('/api/detect', methods=['POST'])
-def api_detect():
-    """API endpoint for external applications to detect drowsiness from image"""
+def detect_drowsiness():
+    """Main drowsiness detection endpoint"""
+    global sleep_frames
+    
     try:
+        # Get image data from request
         data = request.get_json()
-        
         if not data or 'image' not in data:
             return jsonify({'error': 'No image data provided'}), 400
         
-        # Process base64 image
-        img_data = data.get('image')
-        if ',' in img_data:
-            img_data = img_data.split(',')[1]
+        # Decode base64 image
+        image_data = data['image']
+        if ',' in image_data:
+            image_data = image_data.split(',')[1]  # Remove data:image/jpeg;base64,
         
-        img_bytes = base64.b64decode(img_data)
-        nparr = np.frombuffer(img_bytes, np.uint8)
-        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        image_bytes = base64.b64decode(image_data)
         
-        if img is None:
-            return jsonify({'error': 'Invalid image format'}), 400
-
-        h, w, _ = img.shape
-        rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-        results = face_mesh.process(rgb_img)
-
+        # Convert to numpy array
+        nparr = np.frombuffer(image_bytes, np.uint8)
+        frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        
+        if frame is None:
+            return jsonify({'error': 'Invalid image data'}), 400
+        
+        # Convert BGR to RGB for MediaPipe
+        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        
+        # Process the frame
+        results = face_mesh.process(rgb_frame)
+        
+        response_data = {
+            'drowsy': False,
+            'ear_left': 0.0,
+            'ear_right': 0.0,
+            'confidence': 0.0,
+            'message': 'No face detected',
+            'timestamp': datetime.now().isoformat()
+        }
+        
         if results.multi_face_landmarks:
-            face_landmarks = results.multi_face_landmarks[0].landmark
-            ear = calculate_ear(face_landmarks, RIGHT_EYE, w, h)
-
-            sleepy = ear < EAR_THRESHOLD
-            confidence = max(0, (EAR_THRESHOLD - ear) / EAR_THRESHOLD) if sleepy else 0
-
-            response = {
-                'sleepy': sleepy,
-                'ear': round(ear, 4),
-                'confidence': round(confidence, 4),
-                'threshold': EAR_THRESHOLD,
-                'timestamp': datetime.now().isoformat()
-            }
-            
-            if sleepy:
-                logger.warning(f"Drowsiness detected - EAR: {ear:.4f}")
-            
-            return jsonify(response)
-        else:
-            return jsonify({
-                'sleepy': False,
-                'ear': 0,
-                'confidence': 0,
-                'error': 'No face detected',
-                'timestamp': datetime.now().isoformat()
-            })
-            
-    except Exception as e:
-        logger.error(f"Error processing image: {str(e)}")
-        return jsonify({'error': 'Image processing failed', 'details': str(e)}), 500
-
-@app.route('/detect', methods=['POST'])
-def detect():
-    """Original endpoint for web interface"""
-    global sleep_frames
-
-    try:
-        data = request.get_json()
-        img_data = data.get('image').split(',')[1]
-        img_bytes = base64.b64decode(img_data)
-        nparr = np.frombuffer(img_bytes, np.uint8)
-        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-
-        h, w, _ = img.shape
-        rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-        results = face_mesh.process(rgb_img)
-
-        if results.multi_face_landmarks:
-            face_landmarks = results.multi_face_landmarks[0].landmark
-            ear = calculate_ear(face_landmarks, RIGHT_EYE, w, h)
-
-            if ear < EAR_THRESHOLD:
-                sleep_frames += 1
-            else:
-                sleep_frames = 0
-
-            sleepy = sleep_frames > SLEEP_FRAMES_THRESHOLD
-            if sleepy:
-                threading.Thread(target=play_alarm).start()
-
-            return jsonify({'sleepy': sleepy, 'ear': ear})
+            for face_landmarks in results.multi_face_landmarks:
+                landmarks = face_landmarks.landmark
+                
+                # Calculate EAR for both eyes
+                left_ear = calculate_ear(landmarks, LEFT_EYE)
+                right_ear = calculate_ear(landmarks, RIGHT_EYE)
+                avg_ear = (left_ear + right_ear) / 2.0
+                
+                response_data.update({
+                    'ear_left': round(left_ear, 3),
+                    'ear_right': round(right_ear, 3),
+                    'confidence': 1.0,
+                    'message': 'Face detected successfully'
+                })
+                
+                # Check for drowsiness
+                if avg_ear < EAR_THRESHOLD:
+                    sleep_frames += 1
+                    if sleep_frames >= SLEEP_FRAMES_THRESHOLD:
+                        response_data.update({
+                            'drowsy': True,
+                            'message': f'DROWSINESS DETECTED! Eyes closed for {sleep_frames} frames'
+                        })
+                        logger.warning(f"Drowsiness detected - EAR: {avg_ear:.3f}")
+                else:
+                    sleep_frames = 0
+                    response_data['message'] = f'Alert - EAR: {avg_ear:.3f}'
+                
+                break  # Process only the first face
         
-        sleep_frames = 0
-        return jsonify({'sleepy': False, 'ear': 0})
+        return jsonify(response_data)
     
     except Exception as e:
-        logger.error(f"Error in detect endpoint: {str(e)}")
-        return jsonify({'error': 'Detection failed'}), 500
+        logger.error(f"Error in drowsiness detection: {e}")
+        return jsonify({'error': f'Processing error: {str(e)}'}), 500
+
+@app.route('/api/status')
+def status():
+    """API status endpoint"""
+    return jsonify({
+        'api_version': '1.0.0',
+        'status': 'active',
+        'endpoints': {
+            'detect': '/api/detect',
+            'health': '/health',
+            'status': '/api/status'
+        },
+        'features': {
+            'face_detection': True,
+            'drowsiness_detection': True,
+            'real_time_processing': True
+        }
+    })
+
+# Legacy endpoint for backward compatibility
+@app.route('/detect', methods=['POST'])
+def detect_legacy():
+    """Legacy endpoint - redirects to /api/detect"""
+    return detect_drowsiness()
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 8000))
     app.run(host='0.0.0.0', port=port, debug=False)
