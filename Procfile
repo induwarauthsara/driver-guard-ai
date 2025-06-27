@@ -1,1 +1,1 @@
-web: python wsgi.py
+web: python azure_startup.py

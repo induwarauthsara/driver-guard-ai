@@ -1,5 +1,5 @@
 #!/bin/bash
-# Azure App Service startup script
+# Azure App Service startup script for DriverGuard AI
 
 echo "🚀 Starting DriverGuard AI Flask App..."
 
@@ -7,8 +7,10 @@ echo "🚀 Starting DriverGuard AI Flask App..."
 export PYTHONPATH="/home/site/wwwroot:$PYTHONPATH"
 export PORT=${PORT:-8000}
 
-# Install any missing system packages
-apt-get update -qq
+# Install any missing system packages for OpenCV
+echo "📦 Installing system dependencies..."
+apt-get update -qq >/dev/null 2>&1
+# Install system dependencies for audio support as well
 apt-get install -y -qq \
     libgl1-mesa-glx \
     libglib2.0-0 \
@@ -16,10 +18,15 @@ apt-get install -y -qq \
     libxext6 \
     libxrender-dev \
     libgomp1 \
-    ffmpeg
+    ffmpeg \
+    libasound2-dev \
+    libportaudio2 >/dev/null 2>&1
 
-echo "📦 System dependencies installed"
+echo "✅ System dependencies installed"
 
-# Start the application
+# Change to app directory
+cd /home/site/wwwroot
+
+# Start the application with Azure-compatible startup script
 echo "🌐 Starting Flask app on port $PORT..."
-exec gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 600 --worker-class sync app:app
+exec python azure_startup.py
