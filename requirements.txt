@@ -1,0 +1,15 @@
+# Production Dependencies for DriverGuard AI
+Flask==2.3.3
+Flask-CORS==4.0.0
+gunicorn==21.2.0
+
+# Computer Vision - Azure Compatible
+opencv-python-headless==4.6.0.66
+mediapipe==0.10.7
+numpy==1.24.3
+
+# Audio (simpleaudio alternative for Azure)
+pygame==2.5.2
+
+# System compatibility
+Pillow==10.0.1

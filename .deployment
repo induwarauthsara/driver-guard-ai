@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "build": {
+    "commands": [
+      "echo 'Installing Python dependencies...'",
+      "pip install --upgrade pip",
+      "pip install -r requirements.txt"
+    ]
+  },
+  "run": {
+    "type": "script",
+    "script": "startup.sh"
+  },
+  "environmentVariables": {
+    "PYTHONPATH": "/home/site/wwwroot",
+    "SCM_DO_BUILD_DURING_DEPLOYMENT": "true"
+  }
+}
