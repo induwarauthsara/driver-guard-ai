@@ -34,7 +34,7 @@ jobs:
         python -c "import app; print('✅ App imports successfully')"
         python -c "from app import app; print('✅ Flask app created successfully')"
         # Test if all required packages are installed
-        python -c "import cv2, numpy, mediapipe; print('✅ All required packages installed')"
+        python -c "import mediapipe, numpy; print('✅ All required packages installed')"
     
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2

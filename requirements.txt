@@ -3,6 +3,18 @@ Flask==2.3.3
 Flask-CORS==4.0.0
 gunicorn==21.2.0
 
+# Computer Vision - No OpenCV for Azure compatibility
+mediapipe==0.10.7
+numpy==1.24.3
+Pillow==10.0.1
+
+# Optional: For enhanced performance
+# redis==4.6.0  # Uncomment if adding caching
+# psutil==5.9.5  # Uncomment for system monitoringependencies for DriverGuard AI
+Flask==2.3.3
+Flask-CORS==4.0.0
+gunicorn==21.2.0
+
 # Computer Vision - Azure Linux Compatible
 opencv-python-headless==4.6.0.66
 mediapipe==0.10.7

@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
-import cv2
 import mediapipe as mp
 import math
 import numpy as np
@@ -9,6 +8,8 @@ import threading
 import os
 import logging
 from datetime import datetime
+from PIL import Image
+import io
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -101,15 +102,20 @@ def detect_drowsiness():
         
         image_bytes = base64.b64decode(image_data)
         
-        # Convert to numpy array
-        nparr = np.frombuffer(image_bytes, np.uint8)
-        frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        # Convert to PIL Image and then to numpy array
+        pil_image = Image.open(io.BytesIO(image_bytes))
+        # Convert to RGB if needed
+        if pil_image.mode != 'RGB':
+            pil_image = pil_image.convert('RGB')
+        
+        # Convert PIL image to numpy array
+        frame = np.array(pil_image)
         
         if frame is None:
             return jsonify({'error': 'Invalid image data'}), 400
         
-        # Convert BGR to RGB for MediaPipe
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        # Frame is already in RGB format from PIL
+        rgb_frame = frame
         
         # Process the frame
         results = face_mesh.process(rgb_frame)
