@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <!-- Background -->
+  <rect width="192" height="192" rx="36" fill="#2563eb"/>
+  
+  <!-- Shield -->
+  <path d="M96 18C96 18 54 36 54 36V90C54 120 72 150 96 162C120 150 138 120 138 90V36C138 36 96 18 96 18Z" 
+        fill="#ffffff"/>
+  
+  <!-- Inner shield -->
+  <path d="M96 30C96 30 66 45 66 45V90C66 111 81 135 96 144C111 135 126 111 126 90V45C126 45 96 30 96 30Z" 
+        fill="#1e40af"/>
+  
+  <!-- Security elements -->
+  <circle cx="96" cy="78" r="12" fill="#ffffff"/>
+  <rect x="84" y="90" width="24" height="24" rx="3" fill="#ffffff"/>
+  <rect x="90" y="96" width="12" height="12" fill="#1e40af"/>
+  
+  <!-- Additional security indicators -->
+  <circle cx="96" cy="102" r="3" fill="#ffffff"/>
+  <rect x="93" y="99" width="6" height="6" rx="1" fill="#2563eb"/>
+</svg>
