@@ -51,6 +51,54 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+/* Enhanced Alert System Styles */
+.alert-critical {
+    animation: criticalPulse 1s ease-in-out infinite alternate;
+}
+
+.alert-high {
+    animation: highBounce 2s ease-in-out infinite;
+}
+
+@keyframes criticalPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+    }
+    100% {
+        transform: scale(1.05);
+        box-shadow: 0 0 30px rgba(239, 68, 68, 0.8);
+    }
+}
+
+@keyframes highBounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Status indicator styles */
+.status-safe {
+    background: linear-gradient(135deg, #4caf50, #388e3c);
+    color: white;
+}
+
+.status-warning {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    color: white;
+}
+
+.status-danger {
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+    color: white;
+}
+
 .animate-pulse-slow {
     animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

@@ -18,6 +18,8 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Speed from '@mui/icons-material/Speed';
 import Logout from '@mui/icons-material/Logout';
 import Settings from '@mui/icons-material/Settings';
+import { driverAlertSystem, AlertSuggestion } from '@/components/notifications/DriverAlertSystem';
+import CustomAlert from '@/components/ui/CustomAlert';
 
 interface Incident {
   id: string;
@@ -47,6 +49,8 @@ export default function DriverInterface() {
   const [lowDataMode, setLowDataMode] = useState(false);
   const [currentIncident, setCurrentIncident] = useState<string | null>(null);
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [currentAlert, setCurrentAlert] = useState<AlertSuggestion | null>(null);
+  const [alertHistory, setAlertHistory] = useState<AlertSuggestion[]>([]);
   
   const [tripData, setTripData] = useState<TripData>({
     startTime: null,
@@ -90,6 +94,9 @@ export default function DriverInterface() {
         if (detectionResults.incident) {
           handleIncidentDetected(detectionResults.incident);
         }
+        
+        // Simulate additional detection types
+        simulateAdvancedDetection();
         
         // Update trip duration
         if (tripData.startTime) {
@@ -149,6 +156,28 @@ export default function DriverInterface() {
     return { incident: null };
   };
 
+  // Simulate additional detection types
+  const simulateAdvancedDetection = () => {
+    const random = Math.random();
+    
+    if (random < 0.03) { // 3% chance of distraction
+      showCustomAlert('distraction', 0.80);
+    } else if (random < 0.04) { // 1% chance of aggressive driving
+      showCustomAlert('aggressive_driving', 0.75);
+    } else if (random < 0.045) { // 0.5% chance of lane departure
+      showCustomAlert('lane_departure', 0.90);
+    } else if (random < 0.05) { // 0.5% chance of fatigue
+      showCustomAlert('fatigue', 0.85);
+    }
+    
+    // Weather-based alerts (simulate weather conditions)
+    if (random < 0.01) {
+      const weatherTypes = ['weather_alert'];
+      const randomWeather = weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
+      showCustomAlert(randomWeather, 0.95);
+    }
+  };
+
   const handleIncidentDetected = (incident: Incident) => {
     setTripData(prev => ({
       ...prev,
@@ -158,10 +187,8 @@ export default function DriverInterface() {
     setCurrentIncident(incident.type);
     setCurrentStatus('danger');
     
-    // Play alert sound
-    if (audioEnabled) {
-      playAlertSound(incident.type);
-    }
+    // Show enhanced custom alert
+    showCustomAlert(incident.type, incident.confidence);
     
     // Clear incident after 5 seconds
     setTimeout(() => {
@@ -170,30 +197,55 @@ export default function DriverInterface() {
     }, 5000);
   };
 
-  const playAlertSound = (type: string) => {
-    // Create audio context for alert sounds
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
+  // Show custom alert with enhanced notification system
+  const showCustomAlert = (incidentType: string, confidence: number) => {
+    driverAlertSystem.setAudioEnabled(audioEnabled);
+    const alert = driverAlertSystem.showAlert(incidentType, confidence);
     
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+    setCurrentAlert(alert);
+    setAlertHistory(prev => [alert, ...prev.slice(0, 9)]); // Keep last 10 alerts
+  };
+
+  // Handle alert actions
+  const handleAlertAction = (action: string) => {
+    console.log('Alert action taken:', action);
     
-    // Different frequencies for different alerts
-    const frequencies = {
-      drowsiness: 800,
-      phone: 1000,
-      overspeed: 1200
-    };
-    
-    oscillator.frequency.setValueAtTime(frequencies[type as keyof typeof frequencies], audioContext.currentTime);
-    oscillator.type = 'sine';
-    
-    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
-    
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 1);
+    // Handle specific actions
+    switch (action) {
+      case 'emergency_stop':
+      case 'mandatory_break':
+        // Could trigger emergency protocols
+        setCurrentStatus('danger');
+        break;
+      case 'reduce_speed':
+        // Could integrate with vehicle systems
+        console.log('Speed reduction suggested');
+        break;
+      case 'phone_away':
+        // Could disable phone notifications
+        console.log('Phone put away');
+        break;
+      default:
+        console.log('General action acknowledged');
+    }
+  };
+
+  // Dismiss current alert
+  const dismissAlert = () => {
+    driverAlertSystem.dismissAlert();
+    setCurrentAlert(null);
+  };
+
+  // Enable/disable audio and sync with alert system
+  const toggleAudio = () => {
+    const newAudioState = !audioEnabled;
+    setAudioEnabled(newAudioState);
+    driverAlertSystem.setAudioEnabled(newAudioState);
+  };
+
+  // Test audio system
+  const testAudio = () => {
+    driverAlertSystem.testAudio();
   };
 
   const startTrip = () => {
@@ -205,12 +257,15 @@ export default function DriverInterface() {
       distance: 0
     }));
     setCurrentStatus('safe');
+    setCurrentAlert(null);
+    setAlertHistory([]);
   };
 
   const stopTrip = () => {
     setIsRecording(false);
     setCurrentStatus('safe');
     setCurrentIncident(null);
+    dismissAlert();
   };
 
   const formatDuration = (ms: number) => {
@@ -253,6 +308,13 @@ export default function DriverInterface() {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 pt-16">
+      {/* Custom Alert Overlay */}
+      <CustomAlert
+        alert={currentAlert}
+        onDismiss={dismissAlert}
+        onAction={handleAlertAction}
+      />
+
       <div className="p-4">
         {/* Main Interface - Split Screen */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
@@ -370,14 +432,23 @@ export default function DriverInterface() {
                     <VolumeUp className={audioEnabled ? 'text-blue-500' : 'text-gray-400'} />
                     <span className="text-gray-700 dark:text-gray-300">Audio Alerts</span>
                   </div>
-                  <button
-                    onClick={() => setAudioEnabled(!audioEnabled)}
-                    className={`px-3 py-1 rounded text-sm font-medium ${
-                      audioEnabled ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-600'
-                    }`}
-                  >
-                    {audioEnabled ? 'ON' : 'OFF'}
-                  </button>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={toggleAudio}
+                      className={`px-3 py-1 rounded text-sm font-medium ${
+                        audioEnabled ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-600'
+                      }`}
+                    >
+                      {audioEnabled ? 'ON' : 'OFF'}
+                    </button>
+                    <button
+                      onClick={testAudio}
+                      className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded text-xs"
+                      title="Test Audio"
+                    >
+                      🔊
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -400,6 +471,49 @@ export default function DriverInterface() {
                     {lowDataMode ? 'ON' : 'OFF'}
                   </button>
                 </div>
+
+                {/* Demo Alert Buttons */}
+                <div className="border-t pt-3 mt-3">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Test Alerts:</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => showCustomAlert('drowsiness', 0.92)}
+                      className="px-2 py-1 bg-red-100 hover:bg-red-200 text-red-800 rounded text-xs"
+                    >
+                      😴 Drowsy
+                    </button>
+                    <button
+                      onClick={() => showCustomAlert('phone', 0.88)}
+                      className="px-2 py-1 bg-yellow-100 hover:bg-yellow-200 text-yellow-800 rounded text-xs"
+                    >
+                      📱 Phone
+                    </button>
+                    <button
+                      onClick={() => showCustomAlert('overspeed', 0.95)}
+                      className="px-2 py-1 bg-orange-100 hover:bg-orange-200 text-orange-800 rounded text-xs"
+                    >
+                      🚨 Speed
+                    </button>
+                    <button
+                      onClick={() => showCustomAlert('distraction', 0.80)}
+                      className="px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-800 rounded text-xs"
+                    >
+                      👁️ Distract
+                    </button>
+                    <button
+                      onClick={() => showCustomAlert('lane_departure', 0.90)}
+                      className="px-2 py-1 bg-purple-100 hover:bg-purple-200 text-purple-800 rounded text-xs"
+                    >
+                      ↔️ Lane
+                    </button>
+                    <button
+                      onClick={() => showCustomAlert('fatigue', 0.85)}
+                      className="px-2 py-1 bg-green-100 hover:bg-green-200 text-green-800 rounded text-xs"
+                    >
+                      🥱 Fatigue
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -407,7 +521,7 @@ export default function DriverInterface() {
 
         {/* Trip Information */}
         {isRecording && tripData.startTime && (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Current Trip
             </h3>
@@ -440,6 +554,60 @@ export default function DriverInterface() {
                 </div>
                 <div className="text-sm text-gray-500 dark:text-gray-400">Incidents</div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Alert History Panel */}
+        {alertHistory.length > 0 && (
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Recent Alerts
+              </h3>
+              <button
+                onClick={() => setAlertHistory([])}
+                className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              >
+                Clear History
+              </button>
+            </div>
+            
+            <div className="space-y-3 max-h-60 overflow-y-auto">
+              {alertHistory.map((alert, index) => (
+                <div
+                  key={index}
+                  className={`p-3 rounded-lg border-l-4 ${
+                    alert.urgency === 'critical' ? 'border-red-500 bg-red-50 dark:bg-red-900/20' :
+                    alert.urgency === 'high' ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20' :
+                    alert.urgency === 'medium' ? 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20' :
+                    'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                  }`}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center space-x-3">
+                      <span className="text-2xl">{alert.icon}</span>
+                      <div>
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                          {alert.message}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                          {alert.urgency.toUpperCase()} - Just now
+                        </p>
+                      </div>
+                    </div>
+                    <span className={`
+                      px-2 py-1 text-xs font-bold rounded-full
+                      ${alert.urgency === 'critical' ? 'bg-red-200 text-red-800' :
+                        alert.urgency === 'high' ? 'bg-orange-200 text-orange-800' :
+                        alert.urgency === 'medium' ? 'bg-yellow-200 text-yellow-800' :
+                        'bg-blue-200 text-blue-800'}
+                    `}>
+                      {alert.urgency}
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
