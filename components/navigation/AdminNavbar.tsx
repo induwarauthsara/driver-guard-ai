@@ -29,7 +29,7 @@ export default function AdminNavbar() {
   const currentTab = searchParams.get('tab') || 'overview';
 
   const navItems = [
-    { label: 'Overview', href: '/admin/dashboard', icon: Dashboard, tab: 'overview' },
+    { label: 'Overview', href: '/admin/dashboard?tab=overview', icon: Dashboard, tab: 'overview' },
     { label: 'Incidents', href: '/admin/dashboard?tab=incidents', icon: Warning, tab: 'incidents' },
     { label: 'Drivers', href: '/admin/dashboard?tab=drivers', icon: People, tab: 'drivers' },
     { label: 'Analytics', href: '/admin/dashboard?tab=analytics', icon: TrendingUp, tab: 'analytics' },
