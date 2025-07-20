@@ -21,7 +21,7 @@ import Insights from '@mui/icons-material/Insights';
 import Map from '@mui/icons-material/Map';
 import Route from '@mui/icons-material/Route';
 import LocalGasStation from '@mui/icons-material/LocalGasStation';
-import Eco from '@mui/icons-material/Eco';
+import EcoIcon from '@mui/icons-material/Nature';
 import ShowChart from '@mui/icons-material/ShowChart';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import PieChartIcon from '@mui/icons-material/PieChart';
@@ -30,6 +30,27 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import Star from '@mui/icons-material/Star';
 import StarBorder from '@mui/icons-material/StarBorder';
+
+// Define types
+interface Incident {
+  type: string;
+  severity: string;
+  timestamp: Date;
+}
+
+interface Trip {
+  id: string;
+  date: Date;
+  startLocation: string;
+  endLocation: string;
+  duration: number;
+  distance: number;
+  incidents: Incident[];
+  safetyScore: number;
+  status: string;
+  avgSpeed: number;
+  maxSpeed: number;
+}
 
 export default function TripHistory() {
   const { user, loading } = useAuth();
@@ -450,12 +471,12 @@ export default function TripHistory() {
                           });
                           
                           return Object.entries(incidentCounts)
-                            .sort(([,a], [,b]) => b - a)
+                            .sort(([,a], [,b]) => Number(b) - Number(a))
                             .slice(0, 3)
                             .map(([type, count]) => (
                               <div key={type} className="flex items-center justify-between text-xs">
                                 <span className="text-gray-600 dark:text-gray-400">{type}</span>
-                                <span className="font-medium text-gray-900 dark:text-white">{count}</span>
+                                <span className="font-medium text-gray-900 dark:text-white">{Number(count)}</span>
                               </div>
                             ));
                         })()}

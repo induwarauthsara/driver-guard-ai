@@ -49,7 +49,7 @@ const team = [
 ];
 
 export default function TeamSection() {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [hoveredIndex, setHoveredIndex] = useState(-1);
 
   return (
     <section id="team" className="py-20 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
@@ -95,7 +95,7 @@ export default function TeamSection() {
               }}
               viewport={{ once: true, margin: "-50px" }}
               onHoverStart={() => setHoveredIndex(index)}
-              onHoverEnd={() => setHoveredIndex(null)}
+              onHoverEnd={() => setHoveredIndex(-1)}
               className="team-card team-card-glow bg-white dark:bg-gray-800 rounded-xl p-5 transition-all duration-300 relative"
             >
               {/* Background pattern */}

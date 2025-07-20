@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useAuth } from '@/components/providers/AuthProvider';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Dashboard from '@mui/icons-material/Dashboard';
@@ -53,7 +53,7 @@ interface Analytics {
   driverScores: { name: string; score: number }[];
 }
 
-export default function AdminDashboard() {
+function AdminDashboardContent() {
   const { user, logout, loading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -731,5 +731,15 @@ export default function AdminDashboard() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function AdminDashboard() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
+      <div className="loading-spinner"></div>
+    </div>}>
+      <AdminDashboardContent />
+    </Suspense>
   );
 }

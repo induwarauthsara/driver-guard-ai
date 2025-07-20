@@ -165,7 +165,9 @@ export class DriverAlertSystem {
 
   private initializeAudioContext(): void {
     try {
-      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      if (typeof window !== 'undefined') {
+        this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
     } catch (error) {
       console.warn('Audio context not available:', error);
     }

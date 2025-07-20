@@ -117,7 +117,7 @@ export default function MyStats() {
     return <div className="w-6 h-6" />;
   };
 
-  if (loading || isLoading || !user || !stats) {
+  if (loading || isLoading || !user || !stats || !stats.summary) {
     return (
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
         <div className="loading-spinner"></div>
