@@ -36,7 +36,7 @@ interface TripData {
 }
 
 export default function DriverInterface() {
-  const { user, logout } = useAuth();
+  const { user, logout, loading } = useAuth();
   const router = useRouter();
   const webcamRef = useRef<Webcam>(null);
   const [isRecording, setIsRecording] = useState(false);
@@ -58,10 +58,10 @@ export default function DriverInterface() {
 
   // Redirect if not authenticated or not a driver
   useEffect(() => {
-    if (!user || user.role !== 'driver') {
+    if (!loading && (!user || user.role !== 'driver')) {
       router.push('/auth/login?role=driver');
     }
-  }, [user, router]);
+  }, [user, router, loading]);
 
   // Get user location
   useEffect(() => {
@@ -245,43 +245,14 @@ export default function DriverInterface() {
     }
   };
 
-  if (!user) return null;
+  if (loading || !user) return (
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
+      <div className="loading-spinner"></div>
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-      {/* Header */}
-      <div className="bg-white dark:bg-gray-800 shadow-sm px-4 py-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <img
-              src={user.avatar}
-              alt={user.name}
-              className="w-10 h-10 rounded-full"
-            />
-            <div>
-              <h1 className="font-semibold text-gray-900 dark:text-white">
-                Welcome, {user.name}
-              </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Driver Interface
-              </p>
-            </div>
-          </div>
-          
-          <div className="flex items-center space-x-2">
-            <button className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-              <Settings />
-            </button>
-            <button
-              onClick={logout}
-              className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-            >
-              <Logout />
-            </button>
-          </div>
-        </div>
-      </div>
-
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 pt-16">
       <div className="p-4">
         {/* Main Interface - Split Screen */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">

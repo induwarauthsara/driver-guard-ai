@@ -25,11 +25,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Check for existing session
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+    try {
+      const savedUser = localStorage.getItem('user');
+      if (savedUser) {
+        const parsedUser = JSON.parse(savedUser);
+        // Validate the user object has required properties
+        if (parsedUser && parsedUser.id && parsedUser.email && parsedUser.role) {
+          setUser(parsedUser);
+        } else {
+          // Invalid user data, clear localStorage
+          localStorage.removeItem('user');
+        }
+      }
+    } catch (error) {
+      console.error('Error loading user from localStorage:', error);
+      localStorage.removeItem('user');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
   const login = async (email: string, password: string, role: 'admin' | 'driver') => {

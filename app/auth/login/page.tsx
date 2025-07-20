@@ -15,9 +15,16 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   
-  const { login, loading } = useAuth();
+  const { user, login, loading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (!loading && user) {
+      router.push(user.role === 'admin' ? '/admin/dashboard' : '/driver/interface');
+    }
+  }, [user, loading, router]);
 
   useEffect(() => {
     const roleParam = searchParams.get('role');
@@ -37,6 +44,15 @@ export default function LoginPage() {
       setError('Invalid credentials. Please try again.');
     }
   };
+
+  // Show loading spinner while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="loading-spinner"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">

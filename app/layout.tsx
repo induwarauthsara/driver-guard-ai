@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { AuthProvider } from '@/components/providers/AuthProvider';
-import Navbar from '@/components/landing/Navbar';
+import DynamicNavigation from '@/components/navigation/DynamicNavigation';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <ThemeProvider>
-            <Navbar />
+            <DynamicNavigation />
             {children}
           </ThemeProvider>
         </AuthProvider>

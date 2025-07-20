@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/components/providers/AuthProvider';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Dashboard from '@mui/icons-material/Dashboard';
 import People from '@mui/icons-material/People';
 import Warning from '@mui/icons-material/Warning';
@@ -54,9 +54,10 @@ interface Analytics {
 }
 
 export default function AdminDashboard() {
-  const { user, logout } = useAuth();
+  const { user, logout, loading } = useAuth();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'overview' | 'incidents' | 'drivers' | 'analytics'>('overview');
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState<'overview' | 'incidents' | 'drivers' | 'analytics' | 'settings'>('overview');
   const [drivers, setDrivers] = useState<Driver[]>([]);
   const [incidents, setIncidents] = useState<Incident[]>([]);
   const [analytics, setAnalytics] = useState<Analytics | null>(null);
@@ -66,10 +67,18 @@ export default function AdminDashboard() {
 
   // Redirect if not authenticated or not an admin
   useEffect(() => {
-    if (!user || user.role !== 'admin') {
+    if (!loading && (!user || user.role !== 'admin')) {
       router.push('/auth/login?role=admin');
     }
-  }, [user, router]);
+  }, [user, router, loading]);
+
+  // Handle tab from URL params
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab && ['overview', 'incidents', 'drivers', 'analytics', 'settings'].includes(tab)) {
+      setActiveTab(tab as any);
+    }
+  }, [searchParams]);
 
   // Generate mock data
   useEffect(() => {
@@ -190,84 +199,14 @@ export default function AdminDashboard() {
     document.body.removeChild(link);
   };
 
-  if (!user || isLoading) return (
+  if (loading || isLoading || !user) return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
       <div className="loading-spinner"></div>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-      {/* Header */}
-      <div className="bg-white dark:bg-gray-800 shadow-sm px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Dashboard className="text-blue-500 text-3xl" />
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                DriveGuard AI Dashboard
-              </h1>
-              <p className="text-gray-500 dark:text-gray-400">
-                Real-time driver monitoring and analytics
-              </p>
-            </div>
-          </div>
-          
-          <div className="flex items-center space-x-4">
-            <button className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-              <Notifications />
-            </button>
-            <button className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-              <Settings />
-            </button>
-            <div className="flex items-center space-x-3">
-              <img
-                src={user.avatar}
-                alt={user.name}
-                className="w-10 h-10 rounded-full"
-              />
-              <div className="text-right">
-                <div className="font-medium text-gray-900 dark:text-white">{user.name}</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">Administrator</div>
-              </div>
-            </div>
-            <button
-              onClick={logout}
-              className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-            >
-              <Logout />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Navigation Tabs */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="px-6">
-          <nav className="flex space-x-8">
-            {[
-              { id: 'overview', label: 'Overview', icon: Dashboard },
-              { id: 'incidents', label: 'Incidents', icon: Warning },
-              { id: 'drivers', label: 'Drivers', icon: People },
-              { id: 'analytics', label: 'Analytics', icon: TrendingUp }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === tab.id
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                <tab.icon className="text-lg" />
-                <span>{tab.label}</span>
-              </button>
-            ))}
-          </nav>
-        </div>
-      </div>
-
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 pt-16">
       <div className="p-6">
         {/* Overview Tab */}
         {activeTab === 'overview' && analytics && (
@@ -590,6 +529,130 @@ export default function AdminDashboard() {
                 </h4>
                 <p className="text-3xl font-bold text-purple-600">847</p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">This Month</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Settings Tab */}
+        {activeTab === 'settings' && (
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+                System Settings
+              </h3>
+              
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-md font-medium text-gray-900 dark:text-white mb-4">
+                    Alert Thresholds
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Drowsiness Detection
+                      </label>
+                      <input
+                        type="range"
+                        min="50"
+                        max="95"
+                        defaultValue="75"
+                        className="w-full"
+                      />
+                      <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">75% confidence</div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Phone Usage Detection
+                      </label>
+                      <input
+                        type="range"
+                        min="50"
+                        max="95"
+                        defaultValue="80"
+                        className="w-full"
+                      />
+                      <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">80% confidence</div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Speed Limit Alert
+                      </label>
+                      <input
+                        type="range"
+                        min="5"
+                        max="30"
+                        defaultValue="10"
+                        className="w-full"
+                      />
+                      <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">+10 km/h over limit</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-md font-medium text-gray-900 dark:text-white mb-4">
+                    Notification Settings
+                  </h4>
+                  <div className="space-y-3">
+                    <label className="flex items-center">
+                      <input type="checkbox" defaultChecked className="rounded" />
+                      <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                        Email alerts for critical incidents
+                      </span>
+                    </label>
+                    <label className="flex items-center">
+                      <input type="checkbox" defaultChecked className="rounded" />
+                      <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                        SMS notifications for emergency situations
+                      </span>
+                    </label>
+                    <label className="flex items-center">
+                      <input type="checkbox" className="rounded" />
+                      <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                        Daily summary reports
+                      </span>
+                    </label>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-md font-medium text-gray-900 dark:text-white mb-4">
+                    Data Retention
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Incident Data
+                      </label>
+                      <select className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                        <option>30 days</option>
+                        <option>90 days</option>
+                        <option>1 year</option>
+                        <option>Forever</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Video Recordings
+                      </label>
+                      <select className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                        <option>7 days</option>
+                        <option>30 days</option>
+                        <option>90 days</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-600">
+                  <button className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    Reset to Defaults
+                  </button>
+                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    Save Settings
+                  </button>
+                </div>
               </div>
             </div>
           </div>
