@@ -145,7 +145,7 @@ export default function ContactSection() {
                   <Psychology className="text-cyan-600 text-3xl" />
                 </motion.div>
                 <p className="font-medium text-gray-900 dark:text-white">Academic Year</p>
-                <p className="text-gray-600 dark:text-gray-300">First Year Undergraduate Project</p>
+                <p className="text-gray-600 dark:text-gray-300">First Year Undergraduate</p>
               </motion.div>
             </div>
 

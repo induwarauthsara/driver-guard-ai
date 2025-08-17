@@ -51,7 +51,9 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+
 /* Enhanced Alert System Styles */
+
 .alert-critical {
     animation: criticalPulse 1s ease-in-out infinite alternate;
 }
@@ -72,7 +74,11 @@ body {
 }
 
 @keyframes highBounce {
-    0%, 20%, 50%, 80%, 100% {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
         transform: translateY(0);
     }
     40% {
@@ -83,7 +89,9 @@ body {
     }
 }
 
+
 /* Status indicator styles */
+
 .status-safe {
     background: linear-gradient(135deg, #4caf50, #388e3c);
     color: white;
@@ -427,6 +435,47 @@ body {
 
 .hero-title {
     text-shadow: 0 0 20px rgba(6, 182, 212, 0.4), 0 0 40px rgba(6, 182, 212, 0.2), 0 0 60px rgba(6, 182, 212, 0.1);
+}
+
+
+/* Mobile-specific adjustments for hero section */
+
+@media (max-width: 640px) {
+    .hero-section {
+        min-height: 100vh;
+        padding-top: 5rem;
+        /* Account for fixed navbar + extra spacing */
+        padding-bottom: 2rem;
+    }
+    .hero-title {
+        line-height: 1.2;
+        text-align: center;
+    }
+    /* Ensure proper spacing for mobile title */
+    .hero-title>div {
+        gap: 0.75rem;
+    }
+    /* Reduce glow effects on mobile for better performance */
+    .hero-title {
+        text-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+    }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+    .hero-section {
+        padding-top: 5rem;
+        /* Account for fixed navbar */
+    }
+    .hero-title {
+        line-height: 1.1;
+    }
+}
+
+@media (min-width: 769px) {
+    .hero-section {
+        padding-top: 4rem;
+        /* Account for fixed navbar */
+    }
 }
 
 @keyframes pulse-glow {

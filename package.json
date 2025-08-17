@@ -16,6 +16,7 @@
     "@azure/storage-blob": "^12.17.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mediapipe/face_mesh": "^0.4.1633559619",
     "@mui/icons-material": "^5.14.15",
     "@mui/material": "^5.14.15",
     "@types/node": "20.6.2",

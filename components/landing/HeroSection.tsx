@@ -237,7 +237,7 @@ export default function HeroSection() {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center py-8 sm:py-12 lg:py-16 mt-4 sm:mt-0">
           {/* Left Column - Content */}
           <motion.div
             style={{
@@ -248,22 +248,22 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center lg:text-left"
+            className="text-center lg:text-left px-4 sm:px-0"
           >
-            <div className="mb-10 relative z-10">
+            <div className="mb-6 sm:mb-8 lg:mb-10 relative z-10">
               {/* Main Title with 3D effect and highlight */}              <motion.h1 
-                className="text-4xl md:text-6xl font-bold text-white relative hero-title"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white relative hero-title"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
               >
                 {/* Logo/Branding Element */}
-                <div className="flex items-center justify-center lg:justify-start mb-2">                  <motion.div 
-                    className="mr-3 flex items-center"
+                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start mb-2 space-y-2 sm:space-y-0">                  <motion.div 
+                    className="mr-0 sm:mr-3 flex items-center"
                     whileHover={{ rotate: [0, -10, 10, -5, 0], scale: 1.05 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <Security className="text-4xl text-cyan-400 mr-2" />
+                    <Security className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-cyan-400 mr-2" />
                   </motion.div>
                   
                   <motion.div 
@@ -287,8 +287,8 @@ export default function HeroSection() {
                     />
                     
                     {/* Main text container */}
-                    <div className="relative z-10 flex items-center">                      <motion.span
-                        className="text-6xl font-bold text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text"
+                    <div className="relative z-10 flex flex-col sm:flex-row items-center">                      <motion.span
+                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text"
                         style={{
                           backgroundSize: "200% 200%",
                           filter: "drop-shadow(0 0 8px rgba(34, 211, 238, 0.3))"
@@ -306,7 +306,7 @@ export default function HeroSection() {
                       </motion.span>
                       
                       <motion.span 
-                        className="ml-3 text-amber-400 font-black relative text-6xl"
+                        className="ml-0 sm:ml-3 text-amber-400 font-black relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl"
                         animate={{
                           scale: [1, 1.15, 1],
                           textShadow: [
@@ -328,7 +328,7 @@ export default function HeroSection() {
                         AI
                         {/* Sparkle effect for AI */}
                         <motion.div
-                          className="absolute -top-2 -right-2 w-3 h-3 bg-amber-300 rounded-full"
+                          className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2 w-2.5 sm:w-3 md:w-4 h-2.5 sm:h-3 md:h-4 bg-amber-300 rounded-full"
                           animate={{
                             scale: [0, 1, 0],
                             opacity: [0, 1, 0]
@@ -340,7 +340,7 @@ export default function HeroSection() {
                           }}
                         />
                         <motion.div
-                          className="absolute -bottom-1 -left-1 w-2 h-2 bg-yellow-400 rounded-full"
+                          className="absolute -bottom-1 -left-1 w-2 sm:w-2.5 md:w-3 h-2 sm:h-2.5 md:h-3 bg-yellow-400 rounded-full"
                           animate={{
                             scale: [0, 1, 0],
                             opacity: [0, 1, 0]
@@ -378,10 +378,10 @@ export default function HeroSection() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
               >
-                <span className="block text-2xl text-cyan-300 font-medium tracking-wide">Real-Time Driver Monitoring Platform</span>
+                <span className="block text-xl sm:text-2xl md:text-3xl text-cyan-300 font-medium tracking-wide text-center lg:text-left">Real-Time Driver Monitoring Platform</span>
                 
                 {/* Interactive indicators */}
-                <div className="flex justify-center lg:justify-start items-center gap-2 mt-3">
+                <div className="flex flex-wrap justify-center lg:justify-start items-center gap-2 mt-3">
                   <motion.div 
                     className="flex items-center px-3 py-1 border border-emerald-500/30 rounded-full bg-emerald-900/20"
                     whileHover={{ scale: 1.05 }}
